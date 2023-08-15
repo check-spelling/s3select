@@ -274,7 +274,7 @@ bool is_on_final_state()
 	  //&& *m_current_depth == variable_states[ current_state -1 ].required_depth_size); 
 	  
 	  // NOTE: by ignoring the current-depth, the matcher gives precedence to key-path match, while not ignoring accessing using array
-	  // meaning, upon requeting a.b[12] , the [12] is not ignored, the a<-->b distance should be calculated as key distance, i.e. not counting array/object with *no keys*.
+	  // meaning, upon requesting a.b[12] , the [12] is not ignored, the a<-->b distance should be calculated as key distance, i.e. not counting array/object with *no keys*.
 	  // user may request 'select _1.phonearray.num'; the reader will traverse `num` exist in `phonearray`
 }
 
