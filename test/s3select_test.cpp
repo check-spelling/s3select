@@ -1824,7 +1824,7 @@ TEST(TestS3selectFunctions, truefalse_trim_expressions)
   ASSERT_EQ(s3select_result_1, s3select_result_2);
 }
 
-TEST(TestS3selectFunctions, tuefalse_like_expressions)
+TEST(TestS3selectFunctions, truefalse_like_expressions)
 {
   std::string input, input1;
   size_t size = 10000;
