@@ -1506,7 +1506,7 @@ private:
   int64_t m_rownum;
   parquet::Type::type m_type;
   std::shared_ptr<parquet::ceph::RowGroupReader> m_row_group_reader;
-  int m_row_grouop_id;
+  int m_row_group_id;
   uint16_t m_col_id;
   parquet::ceph::ParquetFileReader* m_parquet_reader;
   std::shared_ptr<parquet::ColumnReader> m_ColumnReader;
@@ -1732,13 +1732,13 @@ private:
   column_reader_wrap::column_reader_wrap(std::unique_ptr<parquet::ceph::ParquetFileReader> & parquet_reader,uint16_t col_id):
   m_rownum(-1),
   m_type(parquet::Type::type::UNDEFINED),
-  m_row_grouop_id(0),
+  m_row_group_id(0),
   m_col_id(col_id),
   m_end_of_stream(false),
   m_read_last_value(false)
   {
     m_parquet_reader = parquet_reader.get();
-    m_row_group_reader = m_parquet_reader->RowGroup(m_row_grouop_id);
+    m_row_group_reader = m_parquet_reader->RowGroup(m_row_group_id);
     m_ColumnReader = m_row_group_reader->Column(m_col_id);
   }
 
@@ -2041,15 +2041,15 @@ private:
 
         if (HasNext() == false)
         {
-          if ((m_row_grouop_id + 1) >= m_parquet_reader->metadata()->num_row_groups())
+          if ((m_row_group_id + 1) >= m_parquet_reader->metadata()->num_row_groups())
           {
             m_end_of_stream = true;
             return column_reader_wrap::parquet_column_read_state::PARQUET_OUT_OF_RANGE;//end-of-stream
           }
           else
           {
-            m_row_grouop_id++;
-            m_row_group_reader = m_parquet_reader->RowGroup(m_row_grouop_id);
+            m_row_group_id++;
+            m_row_group_reader = m_parquet_reader->RowGroup(m_row_group_id);
             m_ColumnReader = m_row_group_reader->Column(m_col_id);
           }
         }
