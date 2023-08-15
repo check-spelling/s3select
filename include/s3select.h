@@ -2726,7 +2726,7 @@ public:
       if(fp_s3select_result_format && fp_s3select_header_format)
       {
       	if (result.size() > CSV_INPUT_TYPE_RESPONSE_SIZE_LIMIT)
-      	{//there are systems that might resject the response due to its size.
+      	{//there are systems that might reject the response due to its size.
 	  fp_s3select_result_format(result);
 	  fp_s3select_header_format(result);
       	}
