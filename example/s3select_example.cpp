@@ -652,7 +652,7 @@ int main(int argc,char **argv)
 	for (int i = 0; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-key"))
-		{//object recieved as CLI parameter
+		{//object received as CLI parameter
 			fname = argv[i + 1];
 			continue;
 		}
