@@ -848,7 +848,7 @@ TEST(TestS3selectFunctions, syntax_1)
 
 TEST(TestS3selectFunctions, binop_constant)
 {
-    //bug-fix for expresion with constant value on the left side(the bug change the constant values between rows)
+    //bug-fix for expression with constant value on the left side(the bug change the constant values between rows)
     s3select s3select_syntax;
     const std::string input_query = "select 10+1,20-12,2*3,128/2,29%5,2^10 from stdin;";
     auto status = s3select_syntax.parse_query(input_query.c_str());

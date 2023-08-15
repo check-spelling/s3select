@@ -1665,7 +1665,7 @@ void push_is_null_predicate::builder(s3select* self, const char* a, const char* 
 
 void push_when_condition_then::builder(s3select* self, const char* a, const char* b) const
 {
-//purpose: each new function node, provide execution for (if {condition} then {expresion} )
+//purpose: each new function node, provide execution for (if {condition} then {expression} )
   std::string token(a, b);
 
   // _fn_when_then
