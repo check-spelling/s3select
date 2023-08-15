@@ -40,7 +40,7 @@ do
     echo "$r1" "$r2"
 
 	## should be zero or very close to zero; ( s3select is C compile program )
-    res=$(echo "" | awk -v e="$e" -v r1="$r1" -v r2="$r2" 'function abs(n){if (n<0) return -n; else return n;}{if (abs(r1-r2) > 0.00001) {print "MISSMATCH result for expression",e;}}')
+    res=$(echo "" | awk -v e="$e" -v r1="$r1" -v r2="$r2" 'function abs(n){if (n<0) return -n; else return n;}{if (abs(r1-r2) > 0.00001) {print "MISMATCH result for expression",e;}}')
     if test "$res" != ""; then
         echo "$res"
         exit 1
