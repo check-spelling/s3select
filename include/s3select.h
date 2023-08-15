@@ -2181,7 +2181,7 @@ protected:
   unsigned long m_limit;
   unsigned long m_processed_rows;
   size_t m_returned_bytes_size;
-  std::function<void(const char*)> fp_ext_debug_mesg;//dispache debug message into external system
+  std::function<void(const char*)> fp_ext_debug_mesg;//dispatch debug message into external system
 
 public:
   s3select_csv_definitions m_csv_definition;//TODO add method for modify
