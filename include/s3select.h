@@ -3066,7 +3066,7 @@ private:
   {
     //upon exact-filter match push value to scratch area with json-idx ,  it should match variable
     //push (key path , json-var-idx , value) json-var-idx should be attached per each exact filter
-    m_sa->update_json_varible(key_value,json_var_idx);
+    m_sa->update_json_variable(key_value,json_var_idx);
     return 0;
   }
 

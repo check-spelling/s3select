@@ -1239,7 +1239,7 @@ public:
     return m_upper_bound;
   }
 
-  int update_json_varible(value v,int json_idx)
+  int update_json_variable(value v,int json_idx)
   {
     if(json_idx>max_json_idx)
     {
