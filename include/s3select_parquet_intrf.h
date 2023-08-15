@@ -657,7 +657,7 @@ class ReadableFile::ReadableFileImpl : public ObjectInterface {
   
 };
 
-// ReadableFile implemmetation 
+// ReadableFile implementation 
 ReadableFile::ReadableFile(MemoryPool* pool,s3selectEngine::rgw_s3select_api* rgw) { impl_.reset(new ReadableFileImpl(pool,rgw)); }
 
 ReadableFile::~ReadableFile() { internal::CloseFromDestructor(this); }
