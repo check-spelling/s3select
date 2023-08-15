@@ -2969,7 +2969,7 @@ public:
     JsonHandler.set_s3select_processing_callback(f_sql);
     //upon excat match between input-json-key-path and sql-statement-variable-path the callback pushes to scratch area 
     JsonHandler.set_exact_match_callback(f_push_to_scratch);
-    //upon star-operation(in statemenet) the callback pushes the key-path and value into scratch-area
+    //upon star-operation(in statement) the callback pushes the key-path and value into scratch-area
     JsonHandler.set_push_per_star_operation_callback(f_push_key_value_into_scratch_area_per_star_operation);
 
     //the json-from-clause is unique and should exist. otherwise it's a failure. 
