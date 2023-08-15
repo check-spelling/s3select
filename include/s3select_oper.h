@@ -2276,7 +2276,7 @@ public:
   }
 
   void check_args_size(bs_stmt_vec_t* args, uint16_t required, const char* error_msg)
-  {//verify for atleast required parameters
+  {//verify for at least required parameters
     if(args->size() < required)
     {
       throw base_s3select_exception(error_msg,base_s3select_exception::s3select_exp_en_t::FATAL);

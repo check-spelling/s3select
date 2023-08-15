@@ -528,7 +528,7 @@ public:
 	    get_filter()->push_for_cleanup(m_ast_nodes_to_delete);
 
     if (aggr_flow == true)
-    {// atleast one projection column contain aggregation function
+    {// at least one projection column contain aggregation function
       for (const auto &e : get_projections_list())
       {
         auto aggregate_expr = e->get_aggregate();
