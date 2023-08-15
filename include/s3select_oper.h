@@ -236,7 +236,7 @@ public:
             return res; \
         }();
 
-// no placement new; actually, its an oridinary new with additional functionality for deleting the AST nodes.
+// no placement new; actually, its an ordinary new with additional functionality for deleting the AST nodes.
 // (this changes, is for verifying the valgrind report on leak)
 #define S3SELECT_NO_PLACEMENT_NEW(self, type , ... ) [=]() \
         {   \
