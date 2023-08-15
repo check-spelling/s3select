@@ -1409,7 +1409,7 @@ public:
   {
     return 0;
   }
-  virtual std::string print(int ident) =0;//TODO complete it, one option to use level parametr in interface ,
+  virtual std::string print(int ident) =0;//TODO complete it, one option to use level parameter in interface ,
   virtual bool semantic() =0;//done once , post syntax , traverse all nodes and validate semantics.
 
   virtual void traverse_and_apply(scratch_area* sa, projection_alias* pa,bool json_statement)
