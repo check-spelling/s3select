@@ -648,7 +648,7 @@ public:
 
   std::vector<base_statement*>  get_projections_list()
   {
-    return *m_actionQ.projections.get(); //TODO return COPY(?) or to return evalaution results (list of class value{}) / return reference(?)
+    return *m_actionQ.projections.get(); //TODO return COPY(?) or to return evaluation results (list of class value{}) / return reference(?)
   }
 
   scratch_area* get_scratch_area()
