@@ -78,7 +78,7 @@ struct actionQ
   std::string json_array_name; // _1.a[  ]    json_array_name = "a";  upon parser is scanning a correct json-path; json_array_name will contain the array name. 
   std::string json_object_name; // _1.b json_object_name = "b" ; upon parser is scanning a correct json-path; json_object_name will contain the object name.
   std::deque<size_t> json_array_index_number; //  _1.a.c[ some integer number >=0 ]; upon parser is scanning a correct json-path; json_array_index_number will contain the array index.
-					       //  or in the case of multidimensional contain seiries of index number
+					       //  or in the case of multidimensional contain series of index number
 			     
   json_variable_access json_var_md;
 
