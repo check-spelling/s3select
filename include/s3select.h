@@ -997,7 +997,7 @@ void push_float_number::builder(s3select* self, const char* a, const char* b) co
 {
   std::string token(a, b);
 
-  //the parser for float(real_p) is accepting also integers, thus "blocking" integer acceptence and all are float.
+  //the parser for float(real_p) is accepting also integers, thus "blocking" integer acceptance and all are float.
   bsc::parse_info<> info = bsc::parse(token.c_str(), bsc::int_p, bsc::space_p);
 
   if (!info.full)
