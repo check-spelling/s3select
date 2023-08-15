@@ -133,7 +133,7 @@ class ChunksStreamer : public rapidjson::MemoryStream {
 
     void saveRemainingBytes()
     {//this routine called per each new chunk
-      //save the remaining bytes, before its overriden by the next-chunk.
+      //save the remaining bytes, before its overridden by the next-chunk.
       size_t copy_left_sz = getBytesLeft(); //should be very small
       internal_buffer.assign(src_,copy_left_sz);
       
