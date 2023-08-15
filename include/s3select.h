@@ -685,7 +685,7 @@ public:
         		if(dynamic_cast<__function*>(it)->impl())
 				dynamic_cast<__function*>(it)->impl()->dtor();
       		}
-		//calling to destrcutor of class-function itself, or non-function destructor
+		//calling to destructor of class-function itself, or non-function destructor
 		it->dtor();
 	}
 
