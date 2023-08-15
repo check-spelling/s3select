@@ -833,7 +833,7 @@ TEST(TestS3selectFunctions, syntax_1)
 {
     //where not not (1<11) is not null;  syntax failure ; with parentheses it pass syntax i.e. /not (not (1<11)) is not null;/
     //where not 1<11  is null; syntax failure ; with parentheses it pass syntax i.e. not (1<11) is null;
-    //where not (1); AST failure , expression result,any result implictly define true/false result
+    //where not (1); AST failure , expression result,any result implicitly define true/false result
     //where not (1+1); AST failure
     //where not(not (1<11)) ; OK
     //where (not (1<11)) ; OK
