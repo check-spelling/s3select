@@ -784,7 +784,7 @@ public:
 
       arithmetic_expression = (addsub_operand >> *(addsubop_operator[BOOST_BIND_ACTION(push_addsub)] >> addsub_operand[BOOST_BIND_ACTION(push_addsub_binop)] ));
 
-      addsub_operand = (muldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> muldiv_operand[BOOST_BIND_ACTION(push_muldiv_binop)] ));// this non-terminal gives precedense to  mull/div
+      addsub_operand = (muldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> muldiv_operand[BOOST_BIND_ACTION(push_muldiv_binop)] ));// this non-terminal gives precedence to  mull/div
 
       muldiv_operand = arithmetic_argument | ('(' >> (arithmetic_expression) >> ')') ;
 
@@ -856,7 +856,7 @@ public:
 
       column_pos_name = ('_'>>+(bsc::digit_p) ) | '*' ;
 
-      muldiv_operator = bsc::str_p("*") | bsc::str_p("/") | bsc::str_p("^") | bsc::str_p("%");// got precedense
+      muldiv_operator = bsc::str_p("*") | bsc::str_p("/") | bsc::str_p("^") | bsc::str_p("%");// got precedence
 
       addsubop_operator = bsc::str_p("+") | bsc::str_p("-");
 
