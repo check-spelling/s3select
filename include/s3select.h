@@ -2153,13 +2153,13 @@ struct s3select_csv_definitions //TODO
     bool use_header_info;
     bool ignore_header_info;//skip first line
     bool quote_fields_always;
-    bool quote_fields_asneeded;
+    bool quote_fields_as_needed;
     bool redundant_column;
     bool comment_empty_lines;
     std::vector<char> comment_chars;
     std::vector<char> trim_chars;
 
-    s3select_csv_definitions():row_delimiter('\n'), column_delimiter(','), output_row_delimiter('\n'), output_column_delimiter(','), escape_char('\\'), output_escape_char('\\'), output_quot_char('"'), quot_char('"'), use_header_info(false), ignore_header_info(false), quote_fields_always(false), quote_fields_asneeded(false), redundant_column(false), comment_empty_lines(false) {}
+    s3select_csv_definitions():row_delimiter('\n'), column_delimiter(','), output_row_delimiter('\n'), output_column_delimiter(','), escape_char('\\'), output_escape_char('\\'), output_quot_char('"'), quot_char('"'), use_header_info(false), ignore_header_info(false), quote_fields_always(false), quote_fields_as_needed(false), redundant_column(false), comment_empty_lines(false) {}
 
 };
  
@@ -2285,7 +2285,7 @@ public:
               quoted_result << std::quoted(res->to_string(),m_csv_defintion.output_quot_char, m_csv_defintion.escape_char);
               result.append(quoted_result.str());
 	      m_returned_bytes_size += quoted_result.str().size();
-            }//TODO to add asneeded
+            }//TODO to add as_needed
 	    else
 	    {
             	result.append(res->to_string());
