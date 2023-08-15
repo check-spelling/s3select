@@ -2269,13 +2269,13 @@ public:
 	return m_returned_bytes_size;
   }
 
-  void result_values_to_string(multi_values& projections_resuls, std::string& result)
+  void result_values_to_string(multi_values& projections_results, std::string& result)
   {
     size_t i = 0;
     std::string output_delimiter(1,m_csv_definition.output_column_delimiter);
     std::string output_row_delimiter(1,m_csv_definition.output_row_delimiter);
 
-    for(auto& res : projections_resuls.values)
+    for(auto& res : projections_results.values)
     {
 	    if(fp_ext_debug_mesg)
 		      fp_ext_debug_mesg( res->to_string() );
@@ -2293,7 +2293,7 @@ public:
 	    }
 
             if(!m_csv_definition.redundant_column) {
-              if(++i < projections_resuls.values.size()) {
+              if(++i < projections_results.values.size()) {
                 result.append(output_delimiter);
 		m_returned_bytes_size += output_delimiter.size();
               }
@@ -2311,7 +2311,7 @@ public:
 
   Status getMatchRow( std::string& result)
   {
-    multi_values projections_resuls;
+    multi_values projections_results;
 
     if (m_is_limit_on && m_processed_rows == m_limit)
     {
@@ -2332,10 +2332,10 @@ public:
               i->set_last_call();
               i->set_skip_non_aggregate(false);//projection column is set to be runnable
 
-              projections_resuls.push_value( &(i->eval()) );
+              projections_results.push_value( &(i->eval()) );
             }
 
-          result_values_to_string(projections_resuls,result);
+          result_values_to_string(projections_results,result);
           return m_sql_processing_status = Status::END_OF_STREAM;
         }
 
@@ -2367,9 +2367,9 @@ public:
 	  {
 	    i->set_last_call();
 	    i->set_skip_non_aggregate(false);//projection column is set to be runnable
-	    projections_resuls.push_value( &(i->eval()) );
+	    projections_results.push_value( &(i->eval()) );
 	  }
-	  result_values_to_string(projections_resuls,result);
+	  result_values_to_string(projections_results,result);
 	  return m_sql_processing_status = Status::LIMIT_REACHED;
         }
       }
@@ -2417,12 +2417,12 @@ public:
       if(found)
       {
 	columnar_fetch_projection();
-	projections_resuls.clear();
+	projections_results.clear();
 	for (auto& i : m_projections)
 	{
-	  projections_resuls.push_value( &(i->eval()) );
+	  projections_results.push_value( &(i->eval()) );
 	}
-	result_values_to_string(projections_resuls,result);
+	result_values_to_string(projections_results,result);
       }
 
     }
