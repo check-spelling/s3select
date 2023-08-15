@@ -1655,7 +1655,7 @@ void set_test_10(JsonParserHandler& handler,
 TEST(TestS3selectJsonParser, array_access)
 {
   //create JSON input
-  //create array_access object with specefic setting (e.g a.b[ 1 ].c)
+  //create array_access object with specific setting (e.g a.b[ 1 ].c)
 
   std::string INPUT_TEST_ARRAY = R"({
 "firstName": "Joe",
