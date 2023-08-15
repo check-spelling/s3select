@@ -436,7 +436,7 @@ int process_json_query(const char* input_query,const char* fname)
 
 int run_on_localFile(char* input_query)
 {
-  //purpose: demostrate the s3select functionalities
+  //purpose: demonstrate the s3select functionalities
   s3select s3select_syntax;
 
   if (!input_query)
