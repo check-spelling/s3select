@@ -1783,7 +1783,7 @@ public:
   {
     if (m_var_type == var_t::COLUMN_VALUE)
     {
-      return var_value;  // a literal,could be deciml / float / string
+      return var_value;  // a literal,could be decimal / float / string
     }
     else if(m_var_type == var_t::STAR_OPERATION)
     {
