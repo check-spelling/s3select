@@ -118,7 +118,7 @@ Error Handling
     | Fatal severity (attached to the exception) will end execution immediately, other error severity are counted, upon reaching 100, it ends execution with an error message.
 
 
-AST denostration
+AST demonstration
 ~~~~~~~~~~~~~~~~
 .. ditaa::
 
