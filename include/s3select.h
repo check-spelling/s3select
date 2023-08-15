@@ -49,7 +49,7 @@ struct actionQ
 // it push it into dedicated queue, later those tokens are poped out to build some "higher" construct (lets say 1 + 2)
 // those containers are used only for parsing phase and not for runtime.
 
-  std::vector<mulldiv_operation::muldiv_t> muldivQ;
+  std::vector<muldiv_operation::muldiv_t> muldivQ;
   std::vector<addsub_operation::addsub_op_t> addsubQ;
   std::vector<arithmetic_operand::cmp_t> arithmetic_compareQ;
   std::vector<logical_operand::oplog_t> logical_compareQ;
@@ -197,11 +197,11 @@ struct push_addsub_binop : public base_ast_builder
 };
 static push_addsub_binop g_push_addsub_binop;
 
-struct push_mulldiv_binop : public base_ast_builder
+struct push_muldiv_binop : public base_ast_builder
 {
   void builder(s3select* self, const char* a, const char* b) const;
 };
-static push_mulldiv_binop g_push_mulldiv_binop;
+static push_muldiv_binop g_push_muldiv_binop;
 
 struct push_function_arg : public base_ast_builder
 {
@@ -784,9 +784,9 @@ public:
 
       arithmetic_expression = (addsub_operand >> *(addsubop_operator[BOOST_BIND_ACTION(push_addsub)] >> addsub_operand[BOOST_BIND_ACTION(push_addsub_binop)] ));
 
-      addsub_operand = (mulldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> mulldiv_operand[BOOST_BIND_ACTION(push_mulldiv_binop)] ));// this non-terminal gives precedense to  mull/div
+      addsub_operand = (muldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> muldiv_operand[BOOST_BIND_ACTION(push_muldiv_binop)] ));// this non-terminal gives precedense to  mull/div
 
-      mulldiv_operand = arithmetic_argument | ('(' >> (arithmetic_expression) >> ')') ;
+      muldiv_operand = arithmetic_argument | ('(' >> (arithmetic_expression) >> ')') ;
 
       list_of_function_arguments = (arithmetic_expression)[BOOST_BIND_ACTION(push_function_arg)] >> *(',' >> (arithmetic_expression)[BOOST_BIND_ACTION(push_function_arg)]);
 
@@ -884,7 +884,7 @@ public:
     bsc::rule<ScannerT> trim, trim_whitespace_both, trim_one_side_whitespace, trim_anychar_anyside, trim_type, trim_remove_type, substr, substr_from, substr_from_for;
     bsc::rule<ScannerT> datediff, dateadd, extract, date_part, date_part_extract, time_to_string_constant, time_to_string_dynamic;
     bsc::rule<ScannerT> special_predicates, between_predicate, not_between, in_predicate, like_predicate, like_predicate_escape, like_predicate_no_escape, is_null, is_not_null;
-    bsc::rule<ScannerT> muldiv_operator, addsubop_operator, function, arithmetic_expression, addsub_operand, list_of_function_arguments, arithmetic_argument, mulldiv_operand, reserved_function_names;
+    bsc::rule<ScannerT> muldiv_operator, addsubop_operator, function, arithmetic_expression, addsub_operand, list_of_function_arguments, arithmetic_argument, muldiv_operand, reserved_function_names;
     bsc::rule<ScannerT> fs_type, object_path,json_s3_object,json_path_element,json_object,json_array;
     bsc::rule<ScannerT> projections, projection_expression, alias_name, column_pos,column_pos_name;
     bsc::rule<ScannerT> when_case_else_projection, when_case_value_when, when_stmt, when_value_then;
@@ -1172,19 +1172,19 @@ void push_mulop::builder(s3select* self, const char* a, const char* b) const
 
   if (token == "*")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::MULL);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::MULL);
   }
   else if (token == "/")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::DIV);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::DIV);
   }
   else if(token == "^")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::POW);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::POW);
   }
   else
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::MOD);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::MOD);
   }
 }
 
@@ -1202,7 +1202,7 @@ void push_addsub_binop::builder(s3select* self, [[maybe_unused]] const char* a,[
   self->getAction()->exprQ.push_back(as);
 }
 
-void push_mulldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a, [[maybe_unused]] const char* b) const
+void push_muldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a, [[maybe_unused]] const char* b) const
 {
   base_statement* vl = nullptr, *vr = nullptr;
 
@@ -1210,9 +1210,9 @@ void push_mulldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a,
   self->getAction()->exprQ.pop_back();
   vl = self->getAction()->exprQ.back();
   self->getAction()->exprQ.pop_back();
-  mulldiv_operation::muldiv_t o = self->getAction()->muldivQ.back();
+  muldiv_operation::muldiv_t o = self->getAction()->muldivQ.back();
   self->getAction()->muldivQ.pop_back();
-  mulldiv_operation* f = S3SELECT_NEW(self, mulldiv_operation, vl, o, vr);
+  muldiv_operation* f = S3SELECT_NEW(self, muldiv_operation, vl, o, vr);
   self->getAction()->exprQ.push_back(f);
 }
 

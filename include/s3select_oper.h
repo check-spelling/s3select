@@ -2061,7 +2061,7 @@ public:
   }
 };
 
-class mulldiv_operation : public base_statement
+class muldiv_operation : public base_statement
 {
 
 public:
@@ -2072,7 +2072,7 @@ private:
   base_statement* l;
   base_statement* r;
 
-  muldiv_t _mulldiv;
+  muldiv_t _muldiv;
   value var_value;
   value tmp_value;
 
@@ -2094,14 +2094,14 @@ public:
 
   virtual std::string print(int ident)
   {
-    //std::string out = std::string(ident, ' ') + "mulldiv_operation:" += std::to_string(_mulldiv) + "\n" + l->print(ident - 5) + r->print(ident + 5);
+    //std::string out = std::string(ident, ' ') + "muldiv_operation:" += std::to_string(_muldiv) + "\n" + l->print(ident - 5) + r->print(ident + 5);
     //return out;
     return std::string("#");//TBD
   }
 
   virtual value& eval_internal()
   {
-    switch (_mulldiv)
+    switch (_muldiv)
     {
     case muldiv_t::MULL:
       tmp_value = l->eval();
@@ -2129,9 +2129,9 @@ public:
     }
   }
 
-  mulldiv_operation(base_statement* _l, muldiv_t c, base_statement* _r):l(_l), r(_r), _mulldiv(c){set_operator_name("mulldiv_operation");}
+  muldiv_operation(base_statement* _l, muldiv_t c, base_statement* _r):l(_l), r(_r), _muldiv(c){set_operator_name("muldiv_operation");}
 
-  virtual ~mulldiv_operation() {}
+  virtual ~muldiv_operation() {}
 };
 
 class addsub_operation : public base_statement
