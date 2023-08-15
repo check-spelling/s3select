@@ -3078,7 +3078,7 @@ private:
 
   void sql_error_handling(s3selectEngine::base_s3select_exception& e,std::string& result)
   {
-    //the JsonHandler makes the call to SQL processing, upon a failure to procees the SQL statement, 
+    //the JsonHandler makes the call to SQL processing, upon a failure to process the SQL statement, 
     //the error-handling takes care of the error flow.
     m_error_description = e.what();
     m_error_count++;
