@@ -66,7 +66,7 @@ class ChunksStreamer : public rapidjson::MemoryStream {
 
     ChunksStreamer(const Ch *src, size_t size) : rapidjson::MemoryStream(src,size){next_src_=0;next_size_=0;}
 
-    //override Peek methode
+    //override Peek method
     Ch Peek() //const 
     {
       if(RAPIDJSON_UNLIKELY(src_ == end_))
@@ -133,7 +133,7 @@ class ChunksStreamer : public rapidjson::MemoryStream {
 
     void saveRemainingBytes()
     {//this routine called per each new chunk
-      //save the remaining bytes, before its overriden by the next-chunk.
+      //save the remaining bytes, before its overridden by the next-chunk.
       size_t copy_left_sz = getBytesLeft(); //should be very small
       internal_buffer.assign(src_,copy_left_sz);
       
@@ -274,7 +274,7 @@ bool is_on_final_state()
 	  //&& *m_current_depth == variable_states[ current_state -1 ].required_depth_size); 
 	  
 	  // NOTE: by ignoring the current-depth, the matcher gives precedence to key-path match, while not ignoring accessing using array
-	  // meaning, upon requeting a.b[12] , the [12] is not ignored, the a<-->b distance should be calculated as key distance, i.e. not counting array/object with *no keys*.
+	  // meaning, upon requesting a.b[12] , the [12] is not ignored, the a<-->b distance should be calculated as key distance, i.e. not counting array/object with *no keys*.
 	  // user may request 'select _1.phonearray.num'; the reader will traverse `num` exist in `phonearray`
 }
 

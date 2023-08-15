@@ -162,7 +162,7 @@ public:
   int run_s3select(const char *query, const char *input, size_t input_length, size_t object_size)
   {
     int status = 0;
-    csv_object::csv_defintions csv;
+    csv_object::csv_definitions csv;
 
     m_result = "012345678901"; //12 positions for header-crc
 
@@ -253,7 +253,7 @@ const char* awsCli_handler::header_value_str[4] = {"Records", "application/octet
 int run_on_localFile(char*  input_query);
 
 bool is_parquet_file(const char * fn)
-{//diffrentiate between csv and parquet
+{//differentiate between csv and parquet
    const char * ext = "parquet";
 
    if(strstr(fn+strlen(fn)-strlen(ext), ext ))
@@ -436,7 +436,7 @@ int process_json_query(const char* input_query,const char* fname)
 
 int run_on_localFile(char* input_query)
 {
-  //purpose: demostrate the s3select functionalities
+  //purpose: demonstrate the s3select functionalities
   s3select s3select_syntax;
 
   if (!input_query)
@@ -490,12 +490,12 @@ int run_on_localFile(char* input_query)
   lstat(object_name.c_str(), &statbuf);
 
   std::string s3select_result;
-  s3selectEngine::csv_object::csv_defintions csv;
+  s3selectEngine::csv_object::csv_definitions csv;
   csv.use_header_info = false;
   csv.quote_fields_always=false;
 
 #define CSV_QUOT "CSV_ALWAYS_QUOT"
-#define CSV_COL_DELIM "CSV_COLUMN_DELIMETER"
+#define CSV_COL_DELIM "CSV_COLUMN_DELIMITER"
 #define CSV_ROW_DELIM "CSV_ROW_DELIMITER"
 #define CSV_HEADER_INFO "CSV_HEADER_INFO"
 
@@ -652,7 +652,7 @@ int main(int argc,char **argv)
 	for (int i = 0; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-key"))
-		{//object recieved as CLI parameter
+		{//object received as CLI parameter
 			fname = argv[i + 1];
 			continue;
 		}
@@ -671,7 +671,7 @@ int main(int argc,char **argv)
 
 		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help"))
 		{
-			std::cout << "CSV_ALWAYS_QUOT= CSV_COLUMN_DELIMETER= CSV_ROW_DELIMITER= CSV_HEADER_INFO= s3select_example -q \"... query ...\" -key object-path -cmds queries-file" << std::endl; 
+			std::cout << "CSV_ALWAYS_QUOT= CSV_COLUMN_DELIMITER= CSV_ROW_DELIMITER= CSV_HEADER_INFO= s3select_example -q \"... query ...\" -key object-path -cmds queries-file" << std::endl; 
 			exit(0);
 		}
 	}

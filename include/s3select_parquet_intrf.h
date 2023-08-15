@@ -657,7 +657,7 @@ class ReadableFile::ReadableFileImpl : public ObjectInterface {
   
 };
 
-// ReadableFile implemmetation 
+// ReadableFile implementation 
 ReadableFile::ReadableFile(MemoryPool* pool,s3selectEngine::rgw_s3select_api* rgw) { impl_.reset(new ReadableFileImpl(pool,rgw)); }
 
 ReadableFile::~ReadableFile() { internal::CloseFromDestructor(this); }
@@ -710,7 +710,7 @@ Status ReadableFile::DoSeek(int64_t pos) { return impl_->IMPL->Seek(pos); }
 
 int ReadableFile::file_descriptor() const { return impl_->IMPL->fd(); }
 
-} // namepace ceph
+} // namespace ceph
 } // namespace io
 } // namespace arrow
 
@@ -1506,7 +1506,7 @@ private:
   int64_t m_rownum;
   parquet::Type::type m_type;
   std::shared_ptr<parquet::ceph::RowGroupReader> m_row_group_reader;
-  int m_row_grouop_id;
+  int m_row_group_id;
   uint16_t m_col_id;
   parquet::ceph::ParquetFileReader* m_parquet_reader;
   std::shared_ptr<parquet::ColumnReader> m_ColumnReader;
@@ -1577,7 +1577,7 @@ public:
 private:
 
   std::string m_parquet_file_name;
-  uint32_t m_num_of_columms;
+  uint32_t m_num_of_columns;
   uint64_t m_num_of_rows;
   uint64_t m_rownum;
   schema_t m_schm;
@@ -1591,7 +1591,7 @@ private:
 
   parquet_file_parser(std::string parquet_file_name,s3selectEngine::rgw_s3select_api* rgw_api) : 
                                    m_parquet_file_name(parquet_file_name),
-                                   m_num_of_columms(0),
+                                   m_num_of_columns(0),
                                    m_num_of_rows(0),
                                    m_rownum(0),
                                    m_num_row_groups(0),
@@ -1614,11 +1614,11 @@ private:
   {
     m_parquet_reader = parquet::ceph::ParquetFileReader::OpenFile(m_parquet_file_name,m_rgw_s3select_api,false);
     m_file_metadata = m_parquet_reader->metadata();
-    m_num_of_columms = m_parquet_reader->metadata()->num_columns();
+    m_num_of_columns = m_parquet_reader->metadata()->num_columns();
     m_num_row_groups = m_file_metadata->num_row_groups();
     m_num_of_rows = m_file_metadata->num_rows();
 
-    for (uint32_t i = 0; i < m_num_of_columms; i++)
+    for (uint32_t i = 0; i < m_num_of_columns; i++)
     {
       parquet::Type::type tp = m_file_metadata->schema()->Column(i)->physical_type();
       std::pair<std::string, column_reader_wrap::parquet_type> elm;
@@ -1698,7 +1698,7 @@ private:
 
   uint32_t get_num_of_columns()
   {
-    return m_num_of_columms;
+    return m_num_of_columns;
   }
 
   int get_column_values_by_positions(column_pos_t positions, row_values_t &row_values)
@@ -1708,7 +1708,7 @@ private:
 
     for(auto col : positions)
     {
-      if((col)>=m_num_of_columms)
+      if((col)>=m_num_of_columns)
       {//TODO should verified upon syntax phase 
         //TODO throw exception
         return -1;
@@ -1732,13 +1732,13 @@ private:
   column_reader_wrap::column_reader_wrap(std::unique_ptr<parquet::ceph::ParquetFileReader> & parquet_reader,uint16_t col_id):
   m_rownum(-1),
   m_type(parquet::Type::type::UNDEFINED),
-  m_row_grouop_id(0),
+  m_row_group_id(0),
   m_col_id(col_id),
   m_end_of_stream(false),
   m_read_last_value(false)
   {
     m_parquet_reader = parquet_reader.get();
-    m_row_group_reader = m_parquet_reader->RowGroup(m_row_grouop_id);
+    m_row_group_reader = m_parquet_reader->RowGroup(m_row_group_id);
     m_ColumnReader = m_row_group_reader->Column(m_col_id);
   }
 
@@ -1815,7 +1815,7 @@ private:
       err << "failed to parse column id:" << this->m_col_id << " name:" <<this->m_parquet_reader->metadata()->schema()->Column(m_col_id)->name();
       return err;
     };
-	int16_t defintion_level;
+	int16_t definition_level;
 	int16_t repeat_level;
 
     switch (get_type())
@@ -1823,8 +1823,8 @@ private:
     case parquet::Type::type::INT32:
       int32_reader = static_cast<parquet::Int32Reader *>(m_ColumnReader.get());
       try {
-	rows_read = int32_reader->ReadBatch(1, &defintion_level, &repeat_level, &i32_val , values_read);
-      	if(defintion_level == 0)
+	rows_read = int32_reader->ReadBatch(1, &definition_level, &repeat_level, &i32_val , values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1843,8 +1843,8 @@ private:
     case parquet::Type::type::INT64:
       int64_reader = static_cast<parquet::Int64Reader *>(m_ColumnReader.get());
       try{
-        rows_read = int64_reader->ReadBatch(1, &defintion_level, &repeat_level, (int64_t *)&(values->num), values_read);
-      	if(defintion_level == 0)
+        rows_read = int64_reader->ReadBatch(1, &definition_level, &repeat_level, (int64_t *)&(values->num), values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1867,8 +1867,8 @@ private:
         float_reader = static_cast<parquet::FloatReader *>(m_ColumnReader.get());
       try{
 	float data_source_float = 0;
-      	rows_read = float_reader->ReadBatch(1, &defintion_level, &repeat_level, &data_source_float , values_read);//TODO proper cast
-      	if(defintion_level == 0)
+      	rows_read = float_reader->ReadBatch(1, &definition_level, &repeat_level, &data_source_float , values_read);//TODO proper cast
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1887,8 +1887,8 @@ private:
     case parquet::Type::type::DOUBLE:
         double_reader = static_cast<parquet::DoubleReader *>(m_ColumnReader.get());
       try{
-      	rows_read = double_reader->ReadBatch(1, &defintion_level, &repeat_level, (double *)&(values->dbl), values_read);
-      	if(defintion_level == 0)
+      	rows_read = double_reader->ReadBatch(1, &definition_level, &repeat_level, (double *)&(values->dbl), values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1905,8 +1905,8 @@ private:
     case parquet::Type::type::BYTE_ARRAY:
       byte_array_reader = static_cast<parquet::ByteArrayReader *>(m_ColumnReader.get());
       try{
-        rows_read = byte_array_reader->ReadBatch(1, &defintion_level, &repeat_level, &str_value , values_read);
-      	if(defintion_level == 0)
+        rows_read = byte_array_reader->ReadBatch(1, &definition_level, &repeat_level, &str_value , values_read);
+      	if(definition_level == 0)
       	{	
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -2041,15 +2041,15 @@ private:
 
         if (HasNext() == false)
         {
-          if ((m_row_grouop_id + 1) >= m_parquet_reader->metadata()->num_row_groups())
+          if ((m_row_group_id + 1) >= m_parquet_reader->metadata()->num_row_groups())
           {
             m_end_of_stream = true;
             return column_reader_wrap::parquet_column_read_state::PARQUET_OUT_OF_RANGE;//end-of-stream
           }
           else
           {
-            m_row_grouop_id++;
-            m_row_group_reader = m_parquet_reader->RowGroup(m_row_grouop_id);
+            m_row_group_id++;
+            m_row_group_reader = m_parquet_reader->RowGroup(m_row_group_id);
             m_ColumnReader = m_row_group_reader->Column(m_col_id);
           }
         }

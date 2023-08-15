@@ -30,7 +30,7 @@ TEST(TestS3SElect, s3select_vs_C)
 TEST(TestS3SElect, ParseQuery)
 {
   //TODO syntax issues ?
-  //TODO error messeges ?
+  //TODO error messages ?
 
   s3select s3select_syntax;
 
@@ -626,7 +626,7 @@ void generate_rand_csv_datetime_to_string(std::string& out, std::string& result,
   auto hours = [](){return rand()%24;};
   auto minutes = [](){return rand()%60;};
   auto seconds = [](){return rand()%60;};
-  auto fracation_sec = [](){return rand()%1000000;};
+  auto fraction_sec = [](){return rand()%1000000;};
 
   for (auto i = 0U; i < size; ++i)
   {
@@ -636,7 +636,7 @@ void generate_rand_csv_datetime_to_string(std::string& out, std::string& result,
     auto hr = hours();
     auto mint = minutes();
     auto sec = seconds();
-    auto frac_sec = fracation_sec();
+    auto frac_sec = fraction_sec();
 
     if (const_frmt)
     {
@@ -804,7 +804,7 @@ void test_single_column_single_row(const char* input_query,const char* expected_
     run_query_on_parquet_file(input_query,PARQUET_FILENAME,parquet_result);
 #endif
 
-    s3_csv_object.m_csv_defintion.redundant_column = false; 
+    s3_csv_object.m_csv_definition.redundant_column = false; 
     status = s3_csv_object.run_s3select_on_object(s3select_result, input.c_str(), input.size(),
         false, // dont skip first line
         false, // dont skip last line
@@ -833,7 +833,7 @@ TEST(TestS3selectFunctions, syntax_1)
 {
     //where not not (1<11) is not null;  syntax failure ; with parentheses it pass syntax i.e. /not (not (1<11)) is not null;/
     //where not 1<11  is null; syntax failure ; with parentheses it pass syntax i.e. not (1<11) is null;
-    //where not (1); AST failure , expression result,any result implictly define true/false result
+    //where not (1); AST failure , expression result,any result implicitly define true/false result
     //where not (1+1); AST failure
     //where not(not (1<11)) ; OK
     //where (not (1<11)) ; OK
@@ -848,7 +848,7 @@ TEST(TestS3selectFunctions, syntax_1)
 
 TEST(TestS3selectFunctions, binop_constant)
 {
-    //bug-fix for expresion with constant value on the left side(the bug change the constant values between rows)
+    //bug-fix for expression with constant value on the left side(the bug change the constant values between rows)
     s3select s3select_syntax;
     const std::string input_query = "select 10+1,20-12,2*3,128/2,29%5,2^10 from stdin;";
     auto status = s3select_syntax.parse_query(input_query.c_str());
@@ -1824,7 +1824,7 @@ TEST(TestS3selectFunctions, truefalse_trim_expressions)
   ASSERT_EQ(s3select_result_1, s3select_result_2);
 }
 
-TEST(TestS3selectFunctions, tuefalse_like_expressions)
+TEST(TestS3selectFunctions, truefalse_like_expressions)
 {
   std::string input, input1;
   size_t size = 10000;
@@ -2833,7 +2833,7 @@ void generate_csv_quote_and_escape(std::string& out, char quote = '"', char escp
 TEST(TestS3selectFunctions, csv_quote_string_and_escape_char)
 {
   std::string input, s3select_result_1, s3select_result_2, s3select_result_3;
-  csv_object::csv_defintions csv;
+  csv_object::csv_definitions csv;
   generate_csv_quote_and_escape(input);
   s3select s3select_syntax1, s3select_syntax2, s3select_syntax3;
 
@@ -2873,7 +2873,7 @@ TEST(TestS3selectFunctions, csv_comment_line_and_trim_char)
   generate_csv_quote_and_escape(input);
   s3select s3select_syntax;
 
-  csv_object::csv_defintions csv;
+  csv_object::csv_definitions csv;
   csv.comment_empty_lines = true;
   csv.comment_chars.push_back('#');
   csv.trim_chars.push_back(' ');
@@ -2932,7 +2932,7 @@ TEST(TestS3selectFunctions, csv_chunk_processing)
   std::string input_object, input_stream, s3select_result;
   size_t input_off = 0,input_sz = 0;
   int status;
-  s3selectEngine::csv_object::csv_defintions csv;
+  s3selectEngine::csv_object::csv_definitions csv;
   csv.use_header_info = false;
   s3select s3select_syntax;
 

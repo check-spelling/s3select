@@ -33,14 +33,14 @@ expr_test()
 ## test the arithmetic evaluation of s3select against C program 
 for i in {1..100}
 do
-	e=$(python3 "$PREFIX"/expr_genrator.py 5)
+	e=$(python3 "$PREFIX"/expr_generator.py 5)
 	echo expression["$i"]="$e"
 	r1=$(s3select_calc "$e")
 	r2=$(c_calc "$e")
     echo "$r1" "$r2"
 
 	## should be zero or very close to zero; ( s3select is C compile program )
-    res=$(echo "" | awk -v e="$e" -v r1="$r1" -v r2="$r2" 'function abs(n){if (n<0) return -n; else return n;}{if (abs(r1-r2) > 0.00001) {print "MISSMATCH result for expression",e;}}')
+    res=$(echo "" | awk -v e="$e" -v r1="$r1" -v r2="$r2" 'function abs(n){if (n<0) return -n; else return n;}{if (abs(r1-r2) > 0.00001) {print "MISMATCH result for expression",e;}}')
     if test "$res" != ""; then
         echo "$res"
         exit 1

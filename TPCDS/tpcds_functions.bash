@@ -21,7 +21,7 @@ start_tpcds;'
 move_from_tpcds_bucket_to_hive_bucket()
 {
 ## for the case it needs to move into different bucket(where trino is point at)
-## its is also possible to chage the `create table ... external_location = ...` statements
+## its is also possible to change the `create table ... external_location = ...` statements
 
 aws s3 sync s3://tpcds2 s3://hive
 }

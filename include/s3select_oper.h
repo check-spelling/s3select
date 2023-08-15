@@ -236,7 +236,7 @@ public:
             return res; \
         }();
 
-// no placement new; actually, its an oridinary new with additional functionality for deleting the AST nodes.
+// no placement new; actually, its an ordinary new with additional functionality for deleting the AST nodes.
 // (this changes, is for verifying the valgrind report on leak)
 #define S3SELECT_NO_PLACEMENT_NEW(self, type , ... ) [=]() \
         {   \
@@ -252,7 +252,7 @@ class s3select_reserved_word
   enum class reserve_word_en_t
   {
     NA,
-    S3S_NULL,//TODO check AWS defintions for reserve words, its a long list , what about functions-names? 
+    S3S_NULL,//TODO check AWS definitions for reserve words, its a long list , what about functions-names? 
     S3S_NAN,
     S3S_TRUE,
     S3S_FALSE
@@ -326,7 +326,7 @@ public:
     {
       if(alias.first.compare(alias_name) == 0)
       {
-        return alias.second;  //refernce to execution node
+        return alias.second;  //reference to execution node
       }
     }
     return 0;
@@ -811,7 +811,7 @@ public:
     return __val.timestamp;
   }
 
-  bool operator<(const value& v)//basic compare operator , most itensive runtime operation
+  bool operator<(const value& v)//basic compare operator , most intensive runtime operation
   { 
     //TODO NA possible?
     if (is_string() && v.is_string())
@@ -857,10 +857,10 @@ public:
       return false;
     } 
 
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
-  bool operator>(const value& v) //basic compare operator , most itensive runtime operation
+  bool operator>(const value& v) //basic compare operator , most intensive runtime operation
   {
     //TODO NA possible?
     if (is_string() && v.is_string())
@@ -906,10 +906,10 @@ public:
       return false;
     }
 
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
-  friend bool operator==(const value& lhs, const value& rhs) //basic compare operator , most itensive runtime operation
+  friend bool operator==(const value& lhs, const value& rhs) //basic compare operator , most intensive runtime operation
   {
     //TODO NA possible?
     if (lhs.is_string() && rhs.is_string())
@@ -973,7 +973,7 @@ public:
       return false;
     }
     
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
   bool operator<=(const value& v)
   { 
@@ -1239,7 +1239,7 @@ public:
     return m_upper_bound;
   }
 
-  int update_json_varible(value v,int json_idx)
+  int update_json_variable(value v,int json_idx)
   {
     if(json_idx>max_json_idx)
     {
@@ -1264,11 +1264,11 @@ public:
 #ifdef _ARROW_EXIST
 
 #define S3SELECT_MICROSEC (1000*1000)
-#define S3SELECT_MILLISEX (1000)
+#define S3SELECT_MILLISEC (1000)
 
   int update(std::vector<parquet_file_parser::parquet_value_t> &parquet_row_value, parquet_file_parser::column_pos_t &column_positions)
   {
-    //TODO no need for copy , possible to save referece (its save last row for calculation)
+    //TODO no need for copy , possible to save reference (its save last row for calculation)
 
     parquet_file_parser::column_pos_t::iterator column_pos_iter = column_positions.begin();
     m_upper_bound =0;
@@ -1409,7 +1409,7 @@ public:
   {
     return 0;
   }
-  virtual std::string print(int ident) =0;//TODO complete it, one option to use level parametr in interface ,
+  virtual std::string print(int ident) =0;//TODO complete it, one option to use level parameter in interface ,
   virtual bool semantic() =0;//done once , post syntax , traverse all nodes and validate semantics.
 
   virtual void traverse_and_apply(scratch_area* sa, projection_alias* pa,bool json_statement)
@@ -1478,7 +1478,7 @@ public:
   const base_statement* get_aggregate() const;
   bool is_nested_aggregate(bool&) const;
   bool is_column_reference() const;
-  bool mark_aggreagtion_subtree_to_execute();
+  bool mark_aggregation_subtree_to_execute();
   bool is_statement_contain_star_operation() const;
   void push_for_cleanup(std::set<base_statement*>&);
 
@@ -1783,7 +1783,7 @@ public:
   {
     if (m_var_type == var_t::COLUMN_VALUE)
     {
-      return var_value;  // a literal,could be deciml / float / string
+      return var_value;  // a literal,could be decimal / float / string
     }
     else if(m_var_type == var_t::STAR_OPERATION)
     {
@@ -2061,7 +2061,7 @@ public:
   }
 };
 
-class mulldiv_operation : public base_statement
+class muldiv_operation : public base_statement
 {
 
 public:
@@ -2072,7 +2072,7 @@ private:
   base_statement* l;
   base_statement* r;
 
-  muldiv_t _mulldiv;
+  muldiv_t _muldiv;
   value var_value;
   value tmp_value;
 
@@ -2094,14 +2094,14 @@ public:
 
   virtual std::string print(int ident)
   {
-    //std::string out = std::string(ident, ' ') + "mulldiv_operation:" += std::to_string(_mulldiv) + "\n" + l->print(ident - 5) + r->print(ident + 5);
+    //std::string out = std::string(ident, ' ') + "muldiv_operation:" += std::to_string(_muldiv) + "\n" + l->print(ident - 5) + r->print(ident + 5);
     //return out;
     return std::string("#");//TBD
   }
 
   virtual value& eval_internal()
   {
-    switch (_mulldiv)
+    switch (_muldiv)
     {
     case muldiv_t::MULL:
       tmp_value = l->eval();
@@ -2129,9 +2129,9 @@ public:
     }
   }
 
-  mulldiv_operation(base_statement* _l, muldiv_t c, base_statement* _r):l(_l), r(_r), _mulldiv(c){set_operator_name("mulldiv_operation");}
+  muldiv_operation(base_statement* _l, muldiv_t c, base_statement* _r):l(_l), r(_r), _muldiv(c){set_operator_name("muldiv_operation");}
 
-  virtual ~mulldiv_operation() {}
+  virtual ~muldiv_operation() {}
 };
 
 class addsub_operation : public base_statement
@@ -2276,7 +2276,7 @@ public:
   }
 
   void check_args_size(bs_stmt_vec_t* args, uint16_t required, const char* error_msg)
-  {//verify for atleast required parameters
+  {//verify for at least required parameters
     if(args->size() < required)
     {
       throw base_s3select_exception(error_msg,base_s3select_exception::s3select_exp_en_t::FATAL);
@@ -2963,7 +2963,7 @@ class base_like : public base_function
       escape_expr_val = escape_expr->eval();
       if (escape_expr_val.type != value::value_En_t::STRING)
       {
-        throw base_s3select_exception("esacpe expression must be string");
+        throw base_s3select_exception("escape expression must be string");
       }
 
       like_expr_val = like_expr->eval();

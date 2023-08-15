@@ -567,7 +567,7 @@ void run_s3select_test_opserialization(std::string expression,std::string input,
       return;
 
     std::string s3select_result;
-    csv_object::csv_defintions csv;
+    csv_object::csv_definitions csv;
     csv.redundant_column = false;
 
     csv.output_row_delimiter = *row_delimiter;
@@ -603,7 +603,7 @@ std::string run_s3select_opserialization_quot(std::string expression,std::string
       return failure_sign;
 
     std::string s3select_result;
-    csv_object::csv_defintions csv;
+    csv_object::csv_definitions csv;
 
     csv.redundant_column = false;
     csv.quote_fields_always = quot_always;
@@ -655,7 +655,7 @@ std::string run_s3select(std::string expression,std::string input, const char* j
   std::string s3select_result;
   std::string json_result;
   s3selectEngine::csv_object  s3_csv_object(&s3select_syntax);
-  s3_csv_object.m_csv_defintion.redundant_column = false;
+  s3_csv_object.m_csv_definition.redundant_column = false;
 
   s3_csv_object.run_s3select_on_object(s3select_result, input.c_str(), input.size(), false, false, true);
 

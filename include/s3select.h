@@ -46,10 +46,10 @@ static s3select_reserved_word g_s3select_reserve_word;//read-only
 struct actionQ
 {
 // upon parser is accepting a token (lets say some number),
-// it push it into dedicated queue, later those tokens are poped out to build some "higher" contruct (lets say 1 + 2)
+// it push it into dedicated queue, later those tokens are popped out to build some "higher" construct (lets say 1 + 2)
 // those containers are used only for parsing phase and not for runtime.
 
-  std::vector<mulldiv_operation::muldiv_t> muldivQ;
+  std::vector<muldiv_operation::muldiv_t> muldivQ;
   std::vector<addsub_operation::addsub_op_t> addsubQ;
   std::vector<arithmetic_operand::cmp_t> arithmetic_compareQ;
   std::vector<logical_operand::oplog_t> logical_compareQ;
@@ -78,7 +78,7 @@ struct actionQ
   std::string json_array_name; // _1.a[  ]    json_array_name = "a";  upon parser is scanning a correct json-path; json_array_name will contain the array name. 
   std::string json_object_name; // _1.b json_object_name = "b" ; upon parser is scanning a correct json-path; json_object_name will contain the object name.
   std::deque<size_t> json_array_index_number; //  _1.a.c[ some integer number >=0 ]; upon parser is scanning a correct json-path; json_array_index_number will contain the array index.
-					       //  or in the case of multidimensional contain seiries of index number
+					       //  or in the case of multidimensional contain series of index number
 			     
   json_variable_access json_var_md;
 
@@ -197,11 +197,11 @@ struct push_addsub_binop : public base_ast_builder
 };
 static push_addsub_binop g_push_addsub_binop;
 
-struct push_mulldiv_binop : public base_ast_builder
+struct push_muldiv_binop : public base_ast_builder
 {
   void builder(s3select* self, const char* a, const char* b) const;
 };
-static push_mulldiv_binop g_push_mulldiv_binop;
+static push_muldiv_binop g_push_muldiv_binop;
 
 struct push_function_arg : public base_ast_builder
 {
@@ -528,7 +528,7 @@ public:
 	    get_filter()->push_for_cleanup(m_ast_nodes_to_delete);
 
     if (aggr_flow == true)
-    {// atleast one projection column contain aggregation function
+    {// at least one projection column contain aggregation function
       for (const auto &e : get_projections_list())
       {
         auto aggregate_expr = e->get_aggregate();
@@ -538,7 +538,7 @@ public:
           //per each column, subtree is mark to skip except for the aggregation function subtree. 
           //for an example: substring( ... , sum() , count() ) :: the substring is mark to skip execution, while sum and count not.
           e->set_skip_non_aggregate(true);
-          e->mark_aggreagtion_subtree_to_execute();
+          e->mark_aggregation_subtree_to_execute();
         }
         else
         {
@@ -648,7 +648,7 @@ public:
 
   std::vector<base_statement*>  get_projections_list()
   {
-    return *m_actionQ.projections.get(); //TODO return COPY(?) or to return evalaution results (list of class value{}) / return reference(?)
+    return *m_actionQ.projections.get(); //TODO return COPY(?) or to return evaluation results (list of class value{}) / return reference(?)
   }
 
   scratch_area* get_scratch_area()
@@ -685,7 +685,7 @@ public:
         		if(dynamic_cast<__function*>(it)->impl())
 				dynamic_cast<__function*>(it)->impl()->dtor();
       		}
-		//calling to destrcutor of class-function itself, or non-function destructor
+		//calling to destructor of class-function itself, or non-function destructor
 		it->dtor();
 	}
 
@@ -784,9 +784,9 @@ public:
 
       arithmetic_expression = (addsub_operand >> *(addsubop_operator[BOOST_BIND_ACTION(push_addsub)] >> addsub_operand[BOOST_BIND_ACTION(push_addsub_binop)] ));
 
-      addsub_operand = (mulldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> mulldiv_operand[BOOST_BIND_ACTION(push_mulldiv_binop)] ));// this non-terminal gives precedense to  mull/div
+      addsub_operand = (muldiv_operand >> *(muldiv_operator[BOOST_BIND_ACTION(push_mulop)]  >> muldiv_operand[BOOST_BIND_ACTION(push_muldiv_binop)] ));// this non-terminal gives precedence to  mull/div
 
-      mulldiv_operand = arithmetic_argument | ('(' >> (arithmetic_expression) >> ')') ;
+      muldiv_operand = arithmetic_argument | ('(' >> (arithmetic_expression) >> ')') ;
 
       list_of_function_arguments = (arithmetic_expression)[BOOST_BIND_ACTION(push_function_arg)] >> *(',' >> (arithmetic_expression)[BOOST_BIND_ACTION(push_function_arg)]);
 
@@ -856,7 +856,7 @@ public:
 
       column_pos_name = ('_'>>+(bsc::digit_p) ) | '*' ;
 
-      muldiv_operator = bsc::str_p("*") | bsc::str_p("/") | bsc::str_p("^") | bsc::str_p("%");// got precedense
+      muldiv_operator = bsc::str_p("*") | bsc::str_p("/") | bsc::str_p("^") | bsc::str_p("%");// got precedence
 
       addsubop_operator = bsc::str_p("+") | bsc::str_p("-");
 
@@ -884,7 +884,7 @@ public:
     bsc::rule<ScannerT> trim, trim_whitespace_both, trim_one_side_whitespace, trim_anychar_anyside, trim_type, trim_remove_type, substr, substr_from, substr_from_for;
     bsc::rule<ScannerT> datediff, dateadd, extract, date_part, date_part_extract, time_to_string_constant, time_to_string_dynamic;
     bsc::rule<ScannerT> special_predicates, between_predicate, not_between, in_predicate, like_predicate, like_predicate_escape, like_predicate_no_escape, is_null, is_not_null;
-    bsc::rule<ScannerT> muldiv_operator, addsubop_operator, function, arithmetic_expression, addsub_operand, list_of_function_arguments, arithmetic_argument, mulldiv_operand, reserved_function_names;
+    bsc::rule<ScannerT> muldiv_operator, addsubop_operator, function, arithmetic_expression, addsub_operand, list_of_function_arguments, arithmetic_argument, muldiv_operand, reserved_function_names;
     bsc::rule<ScannerT> fs_type, object_path,json_s3_object,json_path_element,json_object,json_array;
     bsc::rule<ScannerT> projections, projection_expression, alias_name, column_pos,column_pos_name;
     bsc::rule<ScannerT> when_case_else_projection, when_case_value_when, when_stmt, when_value_then;
@@ -997,7 +997,7 @@ void push_float_number::builder(s3select* self, const char* a, const char* b) co
 {
   std::string token(a, b);
 
-  //the parser for float(real_p) is accepting also integers, thus "blocking" integer acceptence and all are float.
+  //the parser for float(real_p) is accepting also integers, thus "blocking" integer acceptance and all are float.
   bsc::parse_info<> info = bsc::parse(token.c_str(), bsc::int_p, bsc::space_p);
 
   if (!info.full)
@@ -1172,19 +1172,19 @@ void push_mulop::builder(s3select* self, const char* a, const char* b) const
 
   if (token == "*")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::MULL);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::MULL);
   }
   else if (token == "/")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::DIV);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::DIV);
   }
   else if(token == "^")
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::POW);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::POW);
   }
   else
   {
-    self->getAction()->muldivQ.push_back(mulldiv_operation::muldiv_t::MOD);
+    self->getAction()->muldivQ.push_back(muldiv_operation::muldiv_t::MOD);
   }
 }
 
@@ -1202,7 +1202,7 @@ void push_addsub_binop::builder(s3select* self, [[maybe_unused]] const char* a,[
   self->getAction()->exprQ.push_back(as);
 }
 
-void push_mulldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a, [[maybe_unused]] const char* b) const
+void push_muldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a, [[maybe_unused]] const char* b) const
 {
   base_statement* vl = nullptr, *vr = nullptr;
 
@@ -1210,9 +1210,9 @@ void push_mulldiv_binop::builder(s3select* self, [[maybe_unused]] const char* a,
   self->getAction()->exprQ.pop_back();
   vl = self->getAction()->exprQ.back();
   self->getAction()->exprQ.pop_back();
-  mulldiv_operation::muldiv_t o = self->getAction()->muldivQ.back();
+  muldiv_operation::muldiv_t o = self->getAction()->muldivQ.back();
   self->getAction()->muldivQ.pop_back();
-  mulldiv_operation* f = S3SELECT_NEW(self, mulldiv_operation, vl, o, vr);
+  muldiv_operation* f = S3SELECT_NEW(self, muldiv_operation, vl, o, vr);
   self->getAction()->exprQ.push_back(f);
 }
 
@@ -1320,7 +1320,7 @@ void push_arithmetic_predicate::builder(s3select* self, const char* a, const cha
   }
   else
   {
-    throw base_s3select_exception(std::string("missing right operand for arithmetic-comparision expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
+    throw base_s3select_exception(std::string("missing right operand for arithmetic-comparison expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
   }
   
   if (!self->getAction()->exprQ.empty())
@@ -1330,7 +1330,7 @@ void push_arithmetic_predicate::builder(s3select* self, const char* a, const cha
   }
   else
   {
-    throw base_s3select_exception(std::string("missing left operand for arithmetic-comparision expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
+    throw base_s3select_exception(std::string("missing left operand for arithmetic-comparison expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
   }
   
   arithmetic_operand* t = S3SELECT_NEW(self, arithmetic_operand, vl, c, vr);
@@ -1665,7 +1665,7 @@ void push_is_null_predicate::builder(s3select* self, const char* a, const char* 
 
 void push_when_condition_then::builder(s3select* self, const char* a, const char* b) const
 {
-//purpose: each new function node, provide execution for (if {condition} then {expresion} )
+//purpose: each new function node, provide execution for (if {condition} then {expression} )
   std::string token(a, b);
 
   // _fn_when_then
@@ -1707,7 +1707,7 @@ void push_case_when_else::builder(s3select* self, const char* a, const char* b) 
   // the loop ended upon reaching the first when-then
   while(when_then_func != self->getAction()->first_when_then_expr)
   {
-    // poping from whenThen-queue and pushing to function arguments list
+    // popping from whenThen-queue and pushing to function arguments list
     when_then_func = self->getAction()->exprQ.back();
     self->getAction()->exprQ.pop_back();
     func->push_argument(when_then_func);
@@ -1732,13 +1732,13 @@ void push_case_value_when_value_else::builder(s3select* self, const char* a, con
   // push the else expression 
   func->push_argument(else_expr);
 
-  // poping the case-value  
+  // popping the case-value  
   base_statement* case_value = self->getAction()->exprQ.back();
   self->getAction()->exprQ.pop_back();
 
   base_statement* when_then_func = nullptr;
   
-  //poping all when-value-then expression(_fn_when_value_then) and add the case-value per each
+  //popping all when-value-then expression(_fn_when_value_then) and add the case-value per each
   while(self->getAction()->whenThenQ.empty() == false)
   {
     when_then_func = self->getAction()->whenThenQ.back();
@@ -2153,13 +2153,13 @@ struct s3select_csv_definitions //TODO
     bool use_header_info;
     bool ignore_header_info;//skip first line
     bool quote_fields_always;
-    bool quote_fields_asneeded;
+    bool quote_fields_as_needed;
     bool redundant_column;
     bool comment_empty_lines;
     std::vector<char> comment_chars;
     std::vector<char> trim_chars;
 
-    s3select_csv_definitions():row_delimiter('\n'), column_delimiter(','), output_row_delimiter('\n'), output_column_delimiter(','), escape_char('\\'), output_escape_char('\\'), output_quot_char('"'), quot_char('"'), use_header_info(false), ignore_header_info(false), quote_fields_always(false), quote_fields_asneeded(false), redundant_column(false), comment_empty_lines(false) {}
+    s3select_csv_definitions():row_delimiter('\n'), column_delimiter(','), output_row_delimiter('\n'), output_column_delimiter(','), escape_char('\\'), output_escape_char('\\'), output_quot_char('"'), quot_char('"'), use_header_info(false), ignore_header_info(false), quote_fields_always(false), quote_fields_as_needed(false), redundant_column(false), comment_empty_lines(false) {}
 
 };
  
@@ -2181,10 +2181,10 @@ protected:
   unsigned long m_limit;
   unsigned long m_processed_rows;
   size_t m_returned_bytes_size;
-  std::function<void(const char*)> fp_ext_debug_mesg;//dispache debug message into external system
+  std::function<void(const char*)> fp_ext_debug_mesg;//dispatch debug message into external system
 
 public:
-  s3select_csv_definitions m_csv_defintion;//TODO add method for modify
+  s3select_csv_definitions m_csv_definition;//TODO add method for modify
 
   enum class Status {
     END_OF_STREAM,
@@ -2206,7 +2206,7 @@ public:
 	  return m_sql_processing_status == Status::LIMIT_REACHED;
   }
 
-  void set_base_defintions(s3select* m)
+  void set_base_definitions(s3select* m)
   {
     if(m_s3_select || !m)
     {//not to define twice
@@ -2247,7 +2247,7 @@ public:
   {
     if(m)
     {
-        set_base_defintions(m);
+        set_base_definitions(m);
     }
   }
 
@@ -2269,31 +2269,31 @@ public:
 	return m_returned_bytes_size;
   }
 
-  void result_values_to_string(multi_values& projections_resuls, std::string& result)
+  void result_values_to_string(multi_values& projections_results, std::string& result)
   {
     size_t i = 0;
-    std::string output_delimiter(1,m_csv_defintion.output_column_delimiter);
-    std::string output_row_delimiter(1,m_csv_defintion.output_row_delimiter);
+    std::string output_delimiter(1,m_csv_definition.output_column_delimiter);
+    std::string output_row_delimiter(1,m_csv_definition.output_row_delimiter);
 
-    for(auto& res : projections_resuls.values)
+    for(auto& res : projections_results.values)
     {
 	    if(fp_ext_debug_mesg)
 		      fp_ext_debug_mesg( res->to_string() );
 
-            if (m_csv_defintion.quote_fields_always) {
+            if (m_csv_definition.quote_fields_always) {
               std::ostringstream quoted_result;
-              quoted_result << std::quoted(res->to_string(),m_csv_defintion.output_quot_char, m_csv_defintion.escape_char);
+              quoted_result << std::quoted(res->to_string(),m_csv_definition.output_quot_char, m_csv_definition.escape_char);
               result.append(quoted_result.str());
 	      m_returned_bytes_size += quoted_result.str().size();
-            }//TODO to add asneeded
+            }//TODO to add as_needed
 	    else
 	    {
             	result.append(res->to_string());
 		m_returned_bytes_size += strlen(res->to_string());
 	    }
 
-            if(!m_csv_defintion.redundant_column) {
-              if(++i < projections_resuls.values.size()) {
+            if(!m_csv_definition.redundant_column) {
+              if(++i < projections_results.values.size()) {
                 result.append(output_delimiter);
 		m_returned_bytes_size += output_delimiter.size();
               }
@@ -2311,7 +2311,7 @@ public:
 
   Status getMatchRow( std::string& result)
   {
-    multi_values projections_resuls;
+    multi_values projections_results;
 
     if (m_is_limit_on && m_processed_rows == m_limit)
     {
@@ -2332,10 +2332,10 @@ public:
               i->set_last_call();
               i->set_skip_non_aggregate(false);//projection column is set to be runnable
 
-              projections_resuls.push_value( &(i->eval()) );
+              projections_results.push_value( &(i->eval()) );
             }
 
-          result_values_to_string(projections_resuls,result);
+          result_values_to_string(projections_results,result);
           return m_sql_processing_status = Status::END_OF_STREAM;
         }
 
@@ -2367,9 +2367,9 @@ public:
 	  {
 	    i->set_last_call();
 	    i->set_skip_non_aggregate(false);//projection column is set to be runnable
-	    projections_resuls.push_value( &(i->eval()) );
+	    projections_results.push_value( &(i->eval()) );
 	  }
-	  result_values_to_string(projections_resuls,result);
+	  result_values_to_string(projections_results,result);
 	  return m_sql_processing_status = Status::LIMIT_REACHED;
         }
       }
@@ -2417,12 +2417,12 @@ public:
       if(found)
       {
 	columnar_fetch_projection();
-	projections_resuls.clear();
+	projections_results.clear();
 	for (auto& i : m_projections)
 	{
-	  projections_resuls.push_value( &(i->eval()) );
+	  projections_results.push_value( &(i->eval()) );
 	}
-	result_values_to_string(projections_resuls,result);
+	result_values_to_string(projections_results,result);
       }
 
     }
@@ -2441,7 +2441,7 @@ class csv_object : public base_s3object
 
 public:
 
-  class csv_defintions : public s3select_csv_definitions
+  class csv_definitions : public s3select_csv_definitions
   {};
 
   explicit csv_object(s3select* s3_query) :
@@ -2452,7 +2452,7 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0) {}
 
-  csv_object(s3select* s3_query, csv_defintions csv) :
+  csv_object(s3select* s3_query, csv_definitions csv) :
     base_s3object(s3_query),
     m_skip_last_line(false),
     m_extract_csv_header_info(false),
@@ -2460,7 +2460,7 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0)
   {
-    m_csv_defintion = csv;
+    m_csv_definition = csv;
   }
 
   csv_object():
@@ -2471,15 +2471,15 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0) {}
 
-  void set_csv_query(s3select* s3_query,csv_defintions csv)
+  void set_csv_query(s3select* s3_query,csv_definitions csv)
   {
     if(m_s3_select != nullptr) 
     {
       //return;
     }
 
-    set_base_defintions(s3_query);
-    m_csv_defintion = csv;
+    set_base_definitions(s3_query);
+    m_csv_definition = csv;
   }
 
 private:
@@ -2556,11 +2556,11 @@ public:
   int extract_csv_header_info()
   {
 
-    if (m_csv_defintion.ignore_header_info == true)
+    if (m_csv_definition.ignore_header_info == true)
     {
       csv_parser->next_line();
     }
-    else if(m_csv_defintion.use_header_info == true)
+    else if(m_csv_definition.use_header_info == true)
     {
       size_t num_of_tokens = getNextRow();//TODO validate number of tokens
 
@@ -2642,13 +2642,13 @@ private:
     {
       //if previous broken line exist , merge it to current chunk
       char* p_obj_chunk = (char*)csv_stream;
-      while (*p_obj_chunk != m_csv_defintion.row_delimiter && p_obj_chunk<(csv_stream+stream_length))
+      while (*p_obj_chunk != m_csv_definition.row_delimiter && p_obj_chunk<(csv_stream+stream_length))
       {
         p_obj_chunk++;
       }
 
       tmp_buff.assign((char*)csv_stream, (char*)csv_stream + (p_obj_chunk - csv_stream));
-      merge_line = m_last_line + tmp_buff + m_csv_defintion.row_delimiter;
+      merge_line = m_last_line + tmp_buff + m_csv_definition.row_delimiter;
       m_previous_line = false;
       m_skip_first_line = true;
 
@@ -2656,11 +2656,11 @@ private:
       run_s3select_on_object(result, merge_line.c_str(), merge_line.length(), false, false, false);
     }
 
-    if (stream_length && csv_stream[stream_length - 1] != m_csv_defintion.row_delimiter)
+    if (stream_length && csv_stream[stream_length - 1] != m_csv_definition.row_delimiter)
     {
       //in case of "broken" last line
       char* p_obj_chunk = (char*)&(csv_stream[stream_length - 1]);
-      while (*p_obj_chunk != m_csv_defintion.row_delimiter && p_obj_chunk>csv_stream)
+      while (*p_obj_chunk != m_csv_definition.row_delimiter && p_obj_chunk>csv_stream)
       {
         p_obj_chunk--;  //scan until end-of previous line in chunk
       }
@@ -2687,13 +2687,13 @@ public:
 
     CSVParser _csv_parser("csv", m_stream, m_end_stream);
     csv_parser = &_csv_parser;
-    csv_parser->set_csv_def(	m_csv_defintion.row_delimiter, 
-		    		m_csv_defintion.column_delimiter, 
-				m_csv_defintion.quot_char, 
-				m_csv_defintion.escape_char, 
-				m_csv_defintion.comment_empty_lines, 
-				m_csv_defintion.comment_chars, 
-				m_csv_defintion.trim_chars);
+    csv_parser->set_csv_def(	m_csv_definition.row_delimiter, 
+		    		m_csv_definition.column_delimiter, 
+				m_csv_definition.quot_char, 
+				m_csv_definition.escape_char, 
+				m_csv_definition.comment_empty_lines, 
+				m_csv_definition.comment_chars, 
+				m_csv_definition.trim_chars);
 
 
     if(m_extract_csv_header_info == false)
@@ -2726,7 +2726,7 @@ public:
       if(fp_s3select_result_format && fp_s3select_header_format)
       {
       	if (result.size() > CSV_INPUT_TYPE_RESPONSE_SIZE_LIMIT)
-      	{//there are systems that might resject the response due to its size.
+      	{//there are systems that might reject the response due to its size.
 	  fp_s3select_result_format(result);
 	  fp_s3select_header_format(result);
       	}
@@ -2789,7 +2789,7 @@ public:
   {
     if(s3_query)
     {
-      set_base_defintions(s3_query);
+      set_base_definitions(s3_query);
     }
     load_meta_data_into_scratch_area();
     for(auto x : m_s3_select->get_projections_list())
@@ -2969,7 +2969,7 @@ public:
     JsonHandler.set_s3select_processing_callback(f_sql);
     //upon excat match between input-json-key-path and sql-statement-variable-path the callback pushes to scratch area 
     JsonHandler.set_exact_match_callback(f_push_to_scratch);
-    //upon star-operation(in statemenet) the callback pushes the key-path and value into scratch-area
+    //upon star-operation(in statement) the callback pushes the key-path and value into scratch-area
     JsonHandler.set_push_per_star_operation_callback(f_push_key_value_into_scratch_area_per_star_operation);
 
     //the json-from-clause is unique and should exist. otherwise it's a failure. 
@@ -2999,9 +2999,9 @@ public:
     if(star_operation_ind)
     {
       JsonHandler.set_star_operation();
-      //upon star-operation the key-path is extracted with the value, each key-value displayed in a seperate row.
+      //upon star-operation the key-path is extracted with the value, each key-value displayed in a separate row.
       //the return results end with a line contains the row-number.
-      m_csv_defintion.output_column_delimiter = m_csv_defintion.output_row_delimiter;
+      m_csv_definition.output_column_delimiter = m_csv_definition.output_row_delimiter;
     }
 
     m_sa->set_parquet_type();//TODO json type
@@ -3066,7 +3066,7 @@ private:
   {
     //upon exact-filter match push value to scratch area with json-idx ,  it should match variable
     //push (key path , json-var-idx , value) json-var-idx should be attached per each exact filter
-    m_sa->update_json_varible(key_value,json_var_idx);
+    m_sa->update_json_variable(key_value,json_var_idx);
     return 0;
   }
 
@@ -3078,14 +3078,14 @@ private:
 
   void sql_error_handling(s3selectEngine::base_s3select_exception& e,std::string& result)
   {
-    //the JsonHandler makes the call to SQL processing, upon a failure to procees the SQL statement, 
+    //the JsonHandler makes the call to SQL processing, upon a failure to process the SQL statement, 
     //the error-handling takes care of the error flow.
     m_error_description = e.what();
     m_error_count++;
     m_s3select_result->append(std::to_string(m_error_count));
     *m_s3select_result += " : ";
     m_s3select_result->append(m_error_description);
-    *m_s3select_result += m_csv_defintion.output_row_delimiter;
+    *m_s3select_result += m_csv_definition.output_row_delimiter;
   }
 
 public:
@@ -3131,7 +3131,7 @@ public:
 
   void set_json_query(s3select* s3_query)
   {
-    set_base_defintions(s3_query);
+    set_base_definitions(s3_query);
     init_json_processor(s3_query);
   }
 

@@ -157,7 +157,7 @@ std::string parse_json_dom(const char* file_name)
 
 	// get file size
 	auto sz = dom_input_file.tellg();
-	// place the position at the begining
+	// place the position at the beginning
 	dom_input_file.seekg(0, std::ios::beg);
 	//read whole file content into allocated buffer
 	std::string file_content(sz, '\0');
@@ -1655,7 +1655,7 @@ void set_test_10(JsonParserHandler& handler,
 TEST(TestS3selectJsonParser, array_access)
 {
   //create JSON input
-  //create array_access object with specefic setting (e.g a.b[ 1 ].c)
+  //create array_access object with specific setting (e.g a.b[ 1 ].c)
 
   std::string INPUT_TEST_ARRAY = R"({
 "firstName": "Joe",

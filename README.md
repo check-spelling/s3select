@@ -29,7 +29,7 @@ That container already contains the cloned repo, enabling code review and modifi
 ### Running the s3select container image
 `sudo docker run -w /s3select -it galsl/ubunto_arrow_parquet_s3select:dev`
 
-### Running google test suite, it contains hundreads of queries
+### Running google test suite, it contains hundreds of queries
 `./test/s3select_test`
 
 ### Running SQL statements using CLI on standard input
@@ -38,7 +38,7 @@ for one example, the following runs the engine on standard input.
 `seq 1 1000 | ./example/s3select_example -q 'select count(0) from stdin;'`
 
 #### SQL statement on ps command (standard input)
->`ps -ef | tr -s ' ' | CSV_COLUMN_DELIMETER=' ' CSV_HEADER_INFO= ./example/s3select_example  -q 'select PID,CMD from stdin where PPID="1";'`
+>`ps -ef | tr -s ' ' | CSV_COLUMN_DELIMITER=' ' CSV_HEADER_INFO= ./example/s3select_example  -q 'select PID,CMD from stdin where PPID="1";'`
 
 #### SQL statement processed by the container, the input-data pipe into the container.
 > `seq 1 1000000 | sudo docker run -w /s3select -i galsl/ubunto_arrow_parquet_s3select:dev 
