@@ -1320,7 +1320,7 @@ void push_arithmetic_predicate::builder(s3select* self, const char* a, const cha
   }
   else
   {
-    throw base_s3select_exception(std::string("missing right operand for arithmetic-comparision expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
+    throw base_s3select_exception(std::string("missing right operand for arithmetic-comparison expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
   }
   
   if (!self->getAction()->exprQ.empty())
@@ -1330,7 +1330,7 @@ void push_arithmetic_predicate::builder(s3select* self, const char* a, const cha
   }
   else
   {
-    throw base_s3select_exception(std::string("missing left operand for arithmetic-comparision expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
+    throw base_s3select_exception(std::string("missing left operand for arithmetic-comparison expression"), base_s3select_exception::s3select_exp_en_t::FATAL);
   }
   
   arithmetic_operand* t = S3SELECT_NEW(self, arithmetic_operand, vl, c, vr);

@@ -857,7 +857,7 @@ public:
       return false;
     } 
 
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
   bool operator>(const value& v) //basic compare operator , most itensive runtime operation
@@ -906,7 +906,7 @@ public:
       return false;
     }
 
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
   friend bool operator==(const value& lhs, const value& rhs) //basic compare operator , most itensive runtime operation
@@ -973,7 +973,7 @@ public:
       return false;
     }
     
-    throw base_s3select_exception("operands not of the same type(numeric , string), while comparision");
+    throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
   bool operator<=(const value& v)
   { 
