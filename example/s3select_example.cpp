@@ -495,7 +495,7 @@ int run_on_localFile(char* input_query)
   csv.quote_fields_always=false;
 
 #define CSV_QUOT "CSV_ALWAYS_QUOT"
-#define CSV_COL_DELIM "CSV_COLUMN_DELIMETER"
+#define CSV_COL_DELIM "CSV_COLUMN_DELIMITER"
 #define CSV_ROW_DELIM "CSV_ROW_DELIMITER"
 #define CSV_HEADER_INFO "CSV_HEADER_INFO"
 
@@ -671,7 +671,7 @@ int main(int argc,char **argv)
 
 		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help"))
 		{
-			std::cout << "CSV_ALWAYS_QUOT= CSV_COLUMN_DELIMETER= CSV_ROW_DELIMITER= CSV_HEADER_INFO= s3select_example -q \"... query ...\" -key object-path -cmds queries-file" << std::endl; 
+			std::cout << "CSV_ALWAYS_QUOT= CSV_COLUMN_DELIMITER= CSV_ROW_DELIMITER= CSV_HEADER_INFO= s3select_example -q \"... query ...\" -key object-path -cmds queries-file" << std::endl; 
 			exit(0);
 		}
 	}
