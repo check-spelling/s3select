@@ -2963,7 +2963,7 @@ class base_like : public base_function
       escape_expr_val = escape_expr->eval();
       if (escape_expr_val.type != value::value_En_t::STRING)
       {
-        throw base_s3select_exception("esacpe expression must be string");
+        throw base_s3select_exception("escape expression must be string");
       }
 
       like_expr_val = like_expr->eval();
