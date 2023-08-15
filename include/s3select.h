@@ -1707,7 +1707,7 @@ void push_case_when_else::builder(s3select* self, const char* a, const char* b) 
   // the loop ended upon reaching the first when-then
   while(when_then_func != self->getAction()->first_when_then_expr)
   {
-    // poping from whenThen-queue and pushing to function arguments list
+    // popping from whenThen-queue and pushing to function arguments list
     when_then_func = self->getAction()->exprQ.back();
     self->getAction()->exprQ.pop_back();
     func->push_argument(when_then_func);
@@ -1732,13 +1732,13 @@ void push_case_value_when_value_else::builder(s3select* self, const char* a, con
   // push the else expression 
   func->push_argument(else_expr);
 
-  // poping the case-value  
+  // popping the case-value  
   base_statement* case_value = self->getAction()->exprQ.back();
   self->getAction()->exprQ.pop_back();
 
   base_statement* when_then_func = nullptr;
   
-  //poping all when-value-then expression(_fn_when_value_then) and add the case-value per each
+  //popping all when-value-then expression(_fn_when_value_then) and add the case-value per each
   while(self->getAction()->whenThenQ.empty() == false)
   {
     when_then_func = self->getAction()->whenThenQ.back();
