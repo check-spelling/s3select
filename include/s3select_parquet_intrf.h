@@ -710,7 +710,7 @@ Status ReadableFile::DoSeek(int64_t pos) { return impl_->IMPL->Seek(pos); }
 
 int ReadableFile::file_descriptor() const { return impl_->IMPL->fd(); }
 
-} // namepace ceph
+} // namespace ceph
 } // namespace io
 } // namespace arrow
 
