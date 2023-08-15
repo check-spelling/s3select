@@ -66,7 +66,7 @@ class ChunksStreamer : public rapidjson::MemoryStream {
 
     ChunksStreamer(const Ch *src, size_t size) : rapidjson::MemoryStream(src,size){next_src_=0;next_size_=0;}
 
-    //override Peek methode
+    //override Peek method
     Ch Peek() //const 
     {
       if(RAPIDJSON_UNLIKELY(src_ == end_))
