@@ -46,7 +46,7 @@ static s3select_reserved_word g_s3select_reserve_word;//read-only
 struct actionQ
 {
 // upon parser is accepting a token (lets say some number),
-// it push it into dedicated queue, later those tokens are poped out to build some "higher" contruct (lets say 1 + 2)
+// it push it into dedicated queue, later those tokens are poped out to build some "higher" construct (lets say 1 + 2)
 // those containers are used only for parsing phase and not for runtime.
 
   std::vector<mulldiv_operation::muldiv_t> muldivQ;
