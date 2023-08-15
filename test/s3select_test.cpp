@@ -30,7 +30,7 @@ TEST(TestS3SElect, s3select_vs_C)
 TEST(TestS3SElect, ParseQuery)
 {
   //TODO syntax issues ?
-  //TODO error messeges ?
+  //TODO error messages ?
 
   s3select s3select_syntax;
 
