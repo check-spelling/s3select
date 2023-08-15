@@ -2551,23 +2551,23 @@ bool base_statement::is_statement_contain_star_operation() const
   return false;
 }
 
-bool base_statement::mark_aggreagtion_subtree_to_execute()
+bool base_statement::mark_aggregation_subtree_to_execute()
 {//purpase:: set aggregation subtree as runnable.
  //the function search for aggregation function, and mark its subtree {skip = false}
   if (is_aggregate())
     set_skip_non_aggregate(false);
   
   if (left())
-    left()->mark_aggreagtion_subtree_to_execute();
+    left()->mark_aggregation_subtree_to_execute();
   
   if(right())
-    right()->mark_aggreagtion_subtree_to_execute();
+    right()->mark_aggregation_subtree_to_execute();
 
   if (is_function())
   {
       for (auto& i : dynamic_cast<__function*>(this)->get_arguments())
       {
-          i->mark_aggreagtion_subtree_to_execute();
+          i->mark_aggregation_subtree_to_execute();
       }
   }
 

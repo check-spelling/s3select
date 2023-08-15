@@ -1478,7 +1478,7 @@ public:
   const base_statement* get_aggregate() const;
   bool is_nested_aggregate(bool&) const;
   bool is_column_reference() const;
-  bool mark_aggreagtion_subtree_to_execute();
+  bool mark_aggregation_subtree_to_execute();
   bool is_statement_contain_star_operation() const;
   void push_for_cleanup(std::set<base_statement*>&);
 

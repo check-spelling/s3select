@@ -538,7 +538,7 @@ public:
           //per each column, subtree is mark to skip except for the aggregation function subtree. 
           //for an example: substring( ... , sum() , count() ) :: the substring is mark to skip execution, while sum and count not.
           e->set_skip_non_aggregate(true);
-          e->mark_aggreagtion_subtree_to_execute();
+          e->mark_aggregation_subtree_to_execute();
         }
         else
         {
