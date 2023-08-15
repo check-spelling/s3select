@@ -326,7 +326,7 @@ public:
     {
       if(alias.first.compare(alias_name) == 0)
       {
-        return alias.second;  //refernce to execution node
+        return alias.second;  //reference to execution node
       }
     }
     return 0;
@@ -1268,7 +1268,7 @@ public:
 
   int update(std::vector<parquet_file_parser::parquet_value_t> &parquet_row_value, parquet_file_parser::column_pos_t &column_positions)
   {
-    //TODO no need for copy , possible to save referece (its save last row for calculation)
+    //TODO no need for copy , possible to save reference (its save last row for calculation)
 
     parquet_file_parser::column_pos_t::iterator column_pos_iter = column_positions.begin();
     m_upper_bound =0;
