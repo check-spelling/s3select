@@ -112,7 +112,7 @@ Error Handling
     | Current implementation is for CSV file types, CSV has no schema, column-types may evaluate on runtime.
     | The above means that wrong semantic statements may occur on runtime.
     
-    | As for syntax error ``select x frm stdin;`` , the builtin parser fails on first miss-match to language definition, and produces an error message back to client (AWS-CLI).
+    | As for syntax error ``select x from_ stdin;`` , the builtin parser fails on first miss-match to language definition, and produces an error message back to client (AWS-CLI).
     | The error message is point on location of miss-match.
     
     | Fatal severity (attached to the exception) will end execution immediately, other error severity are counted, upon reaching 100, it ends execution with an error message.
