@@ -811,7 +811,7 @@ public:
     return __val.timestamp;
   }
 
-  bool operator<(const value& v)//basic compare operator , most itensive runtime operation
+  bool operator<(const value& v)//basic compare operator , most intensive runtime operation
   { 
     //TODO NA possible?
     if (is_string() && v.is_string())
@@ -860,7 +860,7 @@ public:
     throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
-  bool operator>(const value& v) //basic compare operator , most itensive runtime operation
+  bool operator>(const value& v) //basic compare operator , most intensive runtime operation
   {
     //TODO NA possible?
     if (is_string() && v.is_string())
@@ -909,7 +909,7 @@ public:
     throw base_s3select_exception("operands not of the same type(numeric , string), while comparison");
   }
 
-  friend bool operator==(const value& lhs, const value& rhs) //basic compare operator , most itensive runtime operation
+  friend bool operator==(const value& lhs, const value& rhs) //basic compare operator , most intensive runtime operation
   {
     //TODO NA possible?
     if (lhs.is_string() && rhs.is_string())
