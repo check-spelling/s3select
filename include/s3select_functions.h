@@ -488,7 +488,7 @@ public:
 };
 
 /*
-    s3-select function defintions
+    s3-select function definitions
 */
 struct _fn_add : public base_function
 {

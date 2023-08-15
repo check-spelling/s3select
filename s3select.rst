@@ -219,7 +219,7 @@ Sending Query to RGW
 
 Syntax
 ~~~~~~
-CSV default defintion for field-delimiter,row-delimiter,quote-char,escape-char are: { , \\n " \\ }
+CSV default definition for field-delimiter,row-delimiter,quote-char,escape-char are: { , \\n " \\ }
 
 ::
 

@@ -1815,7 +1815,7 @@ private:
       err << "failed to parse column id:" << this->m_col_id << " name:" <<this->m_parquet_reader->metadata()->schema()->Column(m_col_id)->name();
       return err;
     };
-	int16_t defintion_level;
+	int16_t definition_level;
 	int16_t repeat_level;
 
     switch (get_type())
@@ -1823,8 +1823,8 @@ private:
     case parquet::Type::type::INT32:
       int32_reader = static_cast<parquet::Int32Reader *>(m_ColumnReader.get());
       try {
-	rows_read = int32_reader->ReadBatch(1, &defintion_level, &repeat_level, &i32_val , values_read);
-      	if(defintion_level == 0)
+	rows_read = int32_reader->ReadBatch(1, &definition_level, &repeat_level, &i32_val , values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1843,8 +1843,8 @@ private:
     case parquet::Type::type::INT64:
       int64_reader = static_cast<parquet::Int64Reader *>(m_ColumnReader.get());
       try{
-        rows_read = int64_reader->ReadBatch(1, &defintion_level, &repeat_level, (int64_t *)&(values->num), values_read);
-      	if(defintion_level == 0)
+        rows_read = int64_reader->ReadBatch(1, &definition_level, &repeat_level, (int64_t *)&(values->num), values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1867,8 +1867,8 @@ private:
         float_reader = static_cast<parquet::FloatReader *>(m_ColumnReader.get());
       try{
 	float data_source_float = 0;
-      	rows_read = float_reader->ReadBatch(1, &defintion_level, &repeat_level, &data_source_float , values_read);//TODO proper cast
-      	if(defintion_level == 0)
+      	rows_read = float_reader->ReadBatch(1, &definition_level, &repeat_level, &data_source_float , values_read);//TODO proper cast
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1887,8 +1887,8 @@ private:
     case parquet::Type::type::DOUBLE:
         double_reader = static_cast<parquet::DoubleReader *>(m_ColumnReader.get());
       try{
-      	rows_read = double_reader->ReadBatch(1, &defintion_level, &repeat_level, (double *)&(values->dbl), values_read);
-      	if(defintion_level == 0)
+      	rows_read = double_reader->ReadBatch(1, &definition_level, &repeat_level, (double *)&(values->dbl), values_read);
+      	if(definition_level == 0)
       	{
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else
@@ -1905,8 +1905,8 @@ private:
     case parquet::Type::type::BYTE_ARRAY:
       byte_array_reader = static_cast<parquet::ByteArrayReader *>(m_ColumnReader.get());
       try{
-        rows_read = byte_array_reader->ReadBatch(1, &defintion_level, &repeat_level, &str_value , values_read);
-      	if(defintion_level == 0)
+        rows_read = byte_array_reader->ReadBatch(1, &definition_level, &repeat_level, &str_value , values_read);
+      	if(definition_level == 0)
       	{	
 		values->type = column_reader_wrap::parquet_type::PARQUET_NULL;
       	} else

@@ -804,7 +804,7 @@ void test_single_column_single_row(const char* input_query,const char* expected_
     run_query_on_parquet_file(input_query,PARQUET_FILENAME,parquet_result);
 #endif
 
-    s3_csv_object.m_csv_defintion.redundant_column = false; 
+    s3_csv_object.m_csv_definition.redundant_column = false; 
     status = s3_csv_object.run_s3select_on_object(s3select_result, input.c_str(), input.size(),
         false, // dont skip first line
         false, // dont skip last line
@@ -2833,7 +2833,7 @@ void generate_csv_quote_and_escape(std::string& out, char quote = '"', char escp
 TEST(TestS3selectFunctions, csv_quote_string_and_escape_char)
 {
   std::string input, s3select_result_1, s3select_result_2, s3select_result_3;
-  csv_object::csv_defintions csv;
+  csv_object::csv_definitions csv;
   generate_csv_quote_and_escape(input);
   s3select s3select_syntax1, s3select_syntax2, s3select_syntax3;
 
@@ -2873,7 +2873,7 @@ TEST(TestS3selectFunctions, csv_comment_line_and_trim_char)
   generate_csv_quote_and_escape(input);
   s3select s3select_syntax;
 
-  csv_object::csv_defintions csv;
+  csv_object::csv_definitions csv;
   csv.comment_empty_lines = true;
   csv.comment_chars.push_back('#');
   csv.trim_chars.push_back(' ');
@@ -2932,7 +2932,7 @@ TEST(TestS3selectFunctions, csv_chunk_processing)
   std::string input_object, input_stream, s3select_result;
   size_t input_off = 0,input_sz = 0;
   int status;
-  s3selectEngine::csv_object::csv_defintions csv;
+  s3selectEngine::csv_object::csv_definitions csv;
   csv.use_header_info = false;
   s3select s3select_syntax;
 

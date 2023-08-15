@@ -162,7 +162,7 @@ public:
   int run_s3select(const char *query, const char *input, size_t input_length, size_t object_size)
   {
     int status = 0;
-    csv_object::csv_defintions csv;
+    csv_object::csv_definitions csv;
 
     m_result = "012345678901"; //12 positions for header-crc
 
@@ -490,7 +490,7 @@ int run_on_localFile(char* input_query)
   lstat(object_name.c_str(), &statbuf);
 
   std::string s3select_result;
-  s3selectEngine::csv_object::csv_defintions csv;
+  s3selectEngine::csv_object::csv_definitions csv;
   csv.use_header_info = false;
   csv.quote_fields_always=false;
 

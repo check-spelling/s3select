@@ -252,7 +252,7 @@ class s3select_reserved_word
   enum class reserve_word_en_t
   {
     NA,
-    S3S_NULL,//TODO check AWS defintions for reserve words, its a long list , what about functions-names? 
+    S3S_NULL,//TODO check AWS definitions for reserve words, its a long list , what about functions-names? 
     S3S_NAN,
     S3S_TRUE,
     S3S_FALSE

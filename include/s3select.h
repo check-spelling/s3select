@@ -2184,7 +2184,7 @@ protected:
   std::function<void(const char*)> fp_ext_debug_mesg;//dispache debug message into external system
 
 public:
-  s3select_csv_definitions m_csv_defintion;//TODO add method for modify
+  s3select_csv_definitions m_csv_definition;//TODO add method for modify
 
   enum class Status {
     END_OF_STREAM,
@@ -2206,7 +2206,7 @@ public:
 	  return m_sql_processing_status == Status::LIMIT_REACHED;
   }
 
-  void set_base_defintions(s3select* m)
+  void set_base_definitions(s3select* m)
   {
     if(m_s3_select || !m)
     {//not to define twice
@@ -2247,7 +2247,7 @@ public:
   {
     if(m)
     {
-        set_base_defintions(m);
+        set_base_definitions(m);
     }
   }
 
@@ -2272,17 +2272,17 @@ public:
   void result_values_to_string(multi_values& projections_resuls, std::string& result)
   {
     size_t i = 0;
-    std::string output_delimiter(1,m_csv_defintion.output_column_delimiter);
-    std::string output_row_delimiter(1,m_csv_defintion.output_row_delimiter);
+    std::string output_delimiter(1,m_csv_definition.output_column_delimiter);
+    std::string output_row_delimiter(1,m_csv_definition.output_row_delimiter);
 
     for(auto& res : projections_resuls.values)
     {
 	    if(fp_ext_debug_mesg)
 		      fp_ext_debug_mesg( res->to_string() );
 
-            if (m_csv_defintion.quote_fields_always) {
+            if (m_csv_definition.quote_fields_always) {
               std::ostringstream quoted_result;
-              quoted_result << std::quoted(res->to_string(),m_csv_defintion.output_quot_char, m_csv_defintion.escape_char);
+              quoted_result << std::quoted(res->to_string(),m_csv_definition.output_quot_char, m_csv_definition.escape_char);
               result.append(quoted_result.str());
 	      m_returned_bytes_size += quoted_result.str().size();
             }//TODO to add as_needed
@@ -2292,7 +2292,7 @@ public:
 		m_returned_bytes_size += strlen(res->to_string());
 	    }
 
-            if(!m_csv_defintion.redundant_column) {
+            if(!m_csv_definition.redundant_column) {
               if(++i < projections_resuls.values.size()) {
                 result.append(output_delimiter);
 		m_returned_bytes_size += output_delimiter.size();
@@ -2441,7 +2441,7 @@ class csv_object : public base_s3object
 
 public:
 
-  class csv_defintions : public s3select_csv_definitions
+  class csv_definitions : public s3select_csv_definitions
   {};
 
   explicit csv_object(s3select* s3_query) :
@@ -2452,7 +2452,7 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0) {}
 
-  csv_object(s3select* s3_query, csv_defintions csv) :
+  csv_object(s3select* s3_query, csv_definitions csv) :
     base_s3object(s3_query),
     m_skip_last_line(false),
     m_extract_csv_header_info(false),
@@ -2460,7 +2460,7 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0)
   {
-    m_csv_defintion = csv;
+    m_csv_definition = csv;
   }
 
   csv_object():
@@ -2471,15 +2471,15 @@ public:
     m_skip_first_line(false),
     m_processed_bytes(0) {}
 
-  void set_csv_query(s3select* s3_query,csv_defintions csv)
+  void set_csv_query(s3select* s3_query,csv_definitions csv)
   {
     if(m_s3_select != nullptr) 
     {
       //return;
     }
 
-    set_base_defintions(s3_query);
-    m_csv_defintion = csv;
+    set_base_definitions(s3_query);
+    m_csv_definition = csv;
   }
 
 private:
@@ -2556,11 +2556,11 @@ public:
   int extract_csv_header_info()
   {
 
-    if (m_csv_defintion.ignore_header_info == true)
+    if (m_csv_definition.ignore_header_info == true)
     {
       csv_parser->next_line();
     }
-    else if(m_csv_defintion.use_header_info == true)
+    else if(m_csv_definition.use_header_info == true)
     {
       size_t num_of_tokens = getNextRow();//TODO validate number of tokens
 
@@ -2642,13 +2642,13 @@ private:
     {
       //if previous broken line exist , merge it to current chunk
       char* p_obj_chunk = (char*)csv_stream;
-      while (*p_obj_chunk != m_csv_defintion.row_delimiter && p_obj_chunk<(csv_stream+stream_length))
+      while (*p_obj_chunk != m_csv_definition.row_delimiter && p_obj_chunk<(csv_stream+stream_length))
       {
         p_obj_chunk++;
       }
 
       tmp_buff.assign((char*)csv_stream, (char*)csv_stream + (p_obj_chunk - csv_stream));
-      merge_line = m_last_line + tmp_buff + m_csv_defintion.row_delimiter;
+      merge_line = m_last_line + tmp_buff + m_csv_definition.row_delimiter;
       m_previous_line = false;
       m_skip_first_line = true;
 
@@ -2656,11 +2656,11 @@ private:
       run_s3select_on_object(result, merge_line.c_str(), merge_line.length(), false, false, false);
     }
 
-    if (stream_length && csv_stream[stream_length - 1] != m_csv_defintion.row_delimiter)
+    if (stream_length && csv_stream[stream_length - 1] != m_csv_definition.row_delimiter)
     {
       //in case of "broken" last line
       char* p_obj_chunk = (char*)&(csv_stream[stream_length - 1]);
-      while (*p_obj_chunk != m_csv_defintion.row_delimiter && p_obj_chunk>csv_stream)
+      while (*p_obj_chunk != m_csv_definition.row_delimiter && p_obj_chunk>csv_stream)
       {
         p_obj_chunk--;  //scan until end-of previous line in chunk
       }
@@ -2687,13 +2687,13 @@ public:
 
     CSVParser _csv_parser("csv", m_stream, m_end_stream);
     csv_parser = &_csv_parser;
-    csv_parser->set_csv_def(	m_csv_defintion.row_delimiter, 
-		    		m_csv_defintion.column_delimiter, 
-				m_csv_defintion.quot_char, 
-				m_csv_defintion.escape_char, 
-				m_csv_defintion.comment_empty_lines, 
-				m_csv_defintion.comment_chars, 
-				m_csv_defintion.trim_chars);
+    csv_parser->set_csv_def(	m_csv_definition.row_delimiter, 
+		    		m_csv_definition.column_delimiter, 
+				m_csv_definition.quot_char, 
+				m_csv_definition.escape_char, 
+				m_csv_definition.comment_empty_lines, 
+				m_csv_definition.comment_chars, 
+				m_csv_definition.trim_chars);
 
 
     if(m_extract_csv_header_info == false)
@@ -2789,7 +2789,7 @@ public:
   {
     if(s3_query)
     {
-      set_base_defintions(s3_query);
+      set_base_definitions(s3_query);
     }
     load_meta_data_into_scratch_area();
     for(auto x : m_s3_select->get_projections_list())
@@ -3001,7 +3001,7 @@ public:
       JsonHandler.set_star_operation();
       //upon star-operation the key-path is extracted with the value, each key-value displayed in a seperate row.
       //the return results end with a line contains the row-number.
-      m_csv_defintion.output_column_delimiter = m_csv_defintion.output_row_delimiter;
+      m_csv_definition.output_column_delimiter = m_csv_definition.output_row_delimiter;
     }
 
     m_sa->set_parquet_type();//TODO json type
@@ -3085,7 +3085,7 @@ private:
     m_s3select_result->append(std::to_string(m_error_count));
     *m_s3select_result += " : ";
     m_s3select_result->append(m_error_description);
-    *m_s3select_result += m_csv_defintion.output_row_delimiter;
+    *m_s3select_result += m_csv_definition.output_row_delimiter;
   }
 
 public:
@@ -3131,7 +3131,7 @@ public:
 
   void set_json_query(s3select* s3_query)
   {
-    set_base_defintions(s3_query);
+    set_base_definitions(s3_query);
     init_json_processor(s3_query);
   }
 
