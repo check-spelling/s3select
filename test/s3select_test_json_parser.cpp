@@ -157,7 +157,7 @@ std::string parse_json_dom(const char* file_name)
 
 	// get file size
 	auto sz = dom_input_file.tellg();
-	// place the position at the begining
+	// place the position at the beginning
 	dom_input_file.seekg(0, std::ios::beg);
 	//read whole file content into allocated buffer
 	std::string file_content(sz, '\0');
