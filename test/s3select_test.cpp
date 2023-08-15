@@ -626,7 +626,7 @@ void generate_rand_csv_datetime_to_string(std::string& out, std::string& result,
   auto hours = [](){return rand()%24;};
   auto minutes = [](){return rand()%60;};
   auto seconds = [](){return rand()%60;};
-  auto fracation_sec = [](){return rand()%1000000;};
+  auto fraction_sec = [](){return rand()%1000000;};
 
   for (auto i = 0U; i < size; ++i)
   {
@@ -636,7 +636,7 @@ void generate_rand_csv_datetime_to_string(std::string& out, std::string& result,
     auto hr = hours();
     auto mint = minutes();
     auto sec = seconds();
-    auto frac_sec = fracation_sec();
+    auto frac_sec = fraction_sec();
 
     if (const_frmt)
     {
