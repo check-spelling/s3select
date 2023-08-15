@@ -29,7 +29,7 @@ That container already contains the cloned repo, enabling code review and modifi
 ### Running the s3select container image
 `sudo docker run -w /s3select -it galsl/ubunto_arrow_parquet_s3select:dev`
 
-### Running google test suite, it contains hundreads of queries
+### Running google test suite, it contains hundreds of queries
 `./test/s3select_test`
 
 ### Running SQL statements using CLI on standard input
