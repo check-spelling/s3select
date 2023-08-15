@@ -2999,7 +2999,7 @@ public:
     if(star_operation_ind)
     {
       JsonHandler.set_star_operation();
-      //upon star-operation the key-path is extracted with the value, each key-value displayed in a seperate row.
+      //upon star-operation the key-path is extracted with the value, each key-value displayed in a separate row.
       //the return results end with a line contains the row-number.
       m_csv_definition.output_column_delimiter = m_csv_definition.output_row_delimiter;
     }
