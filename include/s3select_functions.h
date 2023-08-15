@@ -2617,7 +2617,7 @@ void base_statement::extract_columns(parquet_file_parser::column_pos_t &cols,con
         }else {
           //column is not alias --> error
           std::stringstream ss;
-          ss << "column " + v->get_name() + " is not part of schema nor an alias";
+          ss << "column " + v->get_name() + " is neither part of schema nor an alias";
           throw base_s3select_exception(ss.str(),base_s3select_exception::s3select_exp_en_t::FATAL);
         }
       }
