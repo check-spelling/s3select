@@ -2552,7 +2552,7 @@ bool base_statement::is_statement_contain_star_operation() const
 }
 
 bool base_statement::mark_aggregation_subtree_to_execute()
-{//purpase:: set aggregation subtree as runnable.
+{//purpose:: set aggregation subtree as runnable.
  //the function search for aggregation function, and mark its subtree {skip = false}
   if (is_aggregate())
     set_skip_non_aggregate(false);
