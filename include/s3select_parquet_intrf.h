@@ -1577,7 +1577,7 @@ public:
 private:
 
   std::string m_parquet_file_name;
-  uint32_t m_num_of_columms;
+  uint32_t m_num_of_columns;
   uint64_t m_num_of_rows;
   uint64_t m_rownum;
   schema_t m_schm;
@@ -1591,7 +1591,7 @@ private:
 
   parquet_file_parser(std::string parquet_file_name,s3selectEngine::rgw_s3select_api* rgw_api) : 
                                    m_parquet_file_name(parquet_file_name),
-                                   m_num_of_columms(0),
+                                   m_num_of_columns(0),
                                    m_num_of_rows(0),
                                    m_rownum(0),
                                    m_num_row_groups(0),
@@ -1614,11 +1614,11 @@ private:
   {
     m_parquet_reader = parquet::ceph::ParquetFileReader::OpenFile(m_parquet_file_name,m_rgw_s3select_api,false);
     m_file_metadata = m_parquet_reader->metadata();
-    m_num_of_columms = m_parquet_reader->metadata()->num_columns();
+    m_num_of_columns = m_parquet_reader->metadata()->num_columns();
     m_num_row_groups = m_file_metadata->num_row_groups();
     m_num_of_rows = m_file_metadata->num_rows();
 
-    for (uint32_t i = 0; i < m_num_of_columms; i++)
+    for (uint32_t i = 0; i < m_num_of_columns; i++)
     {
       parquet::Type::type tp = m_file_metadata->schema()->Column(i)->physical_type();
       std::pair<std::string, column_reader_wrap::parquet_type> elm;
@@ -1698,7 +1698,7 @@ private:
 
   uint32_t get_num_of_columns()
   {
-    return m_num_of_columms;
+    return m_num_of_columns;
   }
 
   int get_column_values_by_positions(column_pos_t positions, row_values_t &row_values)
@@ -1708,7 +1708,7 @@ private:
 
     for(auto col : positions)
     {
-      if((col)>=m_num_of_columms)
+      if((col)>=m_num_of_columns)
       {//TODO should verified upon syntax phase 
         //TODO throw exception
         return -1;
