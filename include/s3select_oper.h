@@ -1264,7 +1264,7 @@ public:
 #ifdef _ARROW_EXIST
 
 #define S3SELECT_MICROSEC (1000*1000)
-#define S3SELECT_MILLISEX (1000)
+#define S3SELECT_MILLISEC (1000)
 
   int update(std::vector<parquet_file_parser::parquet_value_t> &parquet_row_value, parquet_file_parser::column_pos_t &column_positions)
   {
